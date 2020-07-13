@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <h1>多版本nodejs环境安装</h1>
+    <h2>使用nvm管理nodejs</h2>
+    <ul>
+        <li>下载nvm_noinstall.zip</li>
+        <li>install.cmd 以管理员身份运行 修改 root = nvm目录(c:\dev\nvm) path = nodejs目录(c:\dev\nodejs)</li>
+        <li>配置环境变量 NVM_HOME(c:\dev\nvm) | NVM_SYMLINK(c:\dev\nodej) | 修改 path 添加NVM_HOME和NVM_SYMLINK</li>
+        <li>nvm list</li>
+        <li>nvm install latest | nvm install 12.18.0</li>
+        <li>nvm use 12.18.0</li>
+    </ul>
+    <h2> 全局对象 global(类似于浏览器中的window,node中没有window)</h2>
+    <h4>console.log(...) === global.console.log(...)</h4>
+    <ul>
+        <li>__filename 全路径包括文件名</li>
+        <li>__dirname 全路径 不包括文件名</li>
+        <li>定时函数 setTimeout</li>
+        <li>清空定时函数 clearTimeout</li>
+        <pre>
+            var timer = setTimeout(function(){
+                ....
+            });
+
+            clearTimeout(timer);
+        </pre>
+        <li>process 进程对象</li>
+        <pre>
+            console.log(process.argv);
+
+            argv
+
+            第一个参数: nodejs环境的路径
+                'C:\\dev\\nodejs\\node.exe',
+            第二个参数: js文件的路径
+                'F:\\web\\webworkspace\\web\\modules\\nodejs\\js\\nodejs01.js'
+            第三个参数开始表示命令行参数
+        </pre>
+        <li>console.log(process.arch); 当前系统的架构 x64 x86</li>
+    </ul>
+    <h2>定义模块 一个js文件就是一个模块</h2>
+    <h2>导出模块 exports.sum = sum | module.exports = sum</h2>
+    <h2>引入模块 var m1 = require('模块的路径')</h2>
+    <h2>模块文件后缀 .js .json .node(使用C C++编译后的文件) </h2>
+    <pre>
+        三种后缀文件，当使用 require()加载时，可以不写扩展名，加载的优先级 js json node.
+    </pre>
+    <h2>声明变量 let(声明变量) const(声明常量 声明时必须初始化)</h2>
+</div>
+</body>
+</html>

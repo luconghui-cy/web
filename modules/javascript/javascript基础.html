@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JavaScript基础</title>
+    <link type="text/css" rel="stylesheet" href="../../css/text.css" />
+    <script src="js001.js"></script>
+</head>
+<body>
+    <div>
+        <button id="btn">Hello</button>
+        <h2>javascript功能(ECMAScript DOM BOM)</h2>
+        <pre>
+            1 网页特效
+            2 服务端开发(nodejs)
+            3 命令行工具(nodejs)
+            4 桌面程序(electron)
+            5 app(cordova)
+            6 控制硬件-物联网(Ruff)
+            7 游戏开发(cocos2d-js)
+        </pre>
+    </div>
+    <div>
+        <h2>ECMAScript变量</h2>
+        <p>ECMAScript 的解释程序遇到未声明过的标识符时（没有使用 var 声明），用该变量名创建一个全局变量，并将其初始化为指定的值。这是该语言的便利之处，不过如果不能紧密跟踪变量，这样做也很危险。最好的习惯是像使用其他程序设计语言一样，总是声明所有变量。</p>
+        <pre>
+            变量名需要遵守两条简单的规则：
+                第一个字符必须是字母、下划线（_）或美元符号（$）
+                余下的字符可以是下划线、美元符号或任何字母或数字字符
+        </pre>
+        <pre>
+            数组	a	aValues
+            布尔型	b	bFound
+            浮点型（数字）	f	fValue
+            函数	fn	fnMethod
+            整型（数字）	i	iValue
+            对象	o	oType
+            正则表达式	re	rePattern
+            字符串	s	sValue
+            变型（可以是任何类型）	v	vValue
+        </pre>
+    </div>
+
+    <div>
+        <h2>ECMAScript值</h2>
+        <p>在 ECMAScript 中，变量可以存在两种类型的值，即原始值（栈stack）和引用值（堆heap）。</p>
+        <p>ECMAScript 有 5 种原始类型（primitive type），即 Undefined、Null、Boolean、Number 和 String</p>
+        <p>ECMAScript 提供了 typeof 运算符来判断一个值是否在某种类型的范围内。可以用这种运算符判断一个值是否表示一种原始类型：如果它是原始类型，还可以判断它表示哪种原始类型。</p>
+        <pre>
+            对变量或值调用 typeof 运算符将返回下列值之一：
+
+                undefined - 如果变量是 Undefined 类型的
+                boolean - 如果变量是 Boolean 类型的
+                number - 如果变量是 Number 类型的
+                string - 如果变量是 String 类型的
+                object - 如果变量是一种引用类型或 Null 类型的
+        </pre>
+        <p>为什么 typeof 运算符对于 null 值会返回 "Object"。这实际上是 JavaScript 最初实现中的一个错误，然后被 ECMAScript 沿用了。现在，null 被认为是对象的占位符，从而解释了这一矛盾，但从技术上来说，它仍然是原始值。</p>
+        <h2>Undefined</h2>
+        <p>Undefined 类型只有一个值，即 undefined。当声明的变量未初始化时，该变量的默认值是 undefined。</p>
+        <p>当函数无明确返回值时，返回的也是值 "undefined"</p>
+        <p>注意：typeof(未被定义的变量) 将返回 undefined</p>
+        <h2>Null</h2>
+        <p>另一种只有一个值的类型是 Null，它只有一个专用值 null，即它的字面量。值 undefined 实际上是从值 null 派生来的，因此 ECMAScript 把它们定义为相等的。</p>
+        <pre>
+            alert(null == undefined);  //输出 "true"
+        </pre>
+        <p>尽管这两个值相等，但它们的含义不同。undefined 是声明了变量但未对其初始化时赋予该变量的值，null 则用于表示尚未存在的对象（在讨论 typeof 运算符时，简单地介绍过这一点）。如果函数或方法要返回的是对象，那么找不到该对象时，返回的通常是 null。</p>
+        <h2>Boolean</h2>
+        <p>Boolean 类型是 ECMAScript 中最常用的类型之一。它有两个值 true 和 false （即两个 Boolean 字面量）。即使 false 不等于 0，0 也可以在必要时被转换成 false</p>
+        <h2>Number</h2>
+        <p>最特殊的类型是 Number 类型。这种类型既可以表示 32 位的整数，还可以表示 64 位的浮点数。</p>
+        <pre>
+            var iNum = 070;  //070 等于十进制的 56
+            var iNum = 0x1f;  //0x1f 等于十进制的 31
+            var iNum = 0xAB;  //0xAB 等于十进制的 171
+        </pre>
+        <p>要定义浮点值，必须包括小数点和小数点后的一位数字（例如，用 1.0 而不是 1）。这被看作浮点数字面量。例如：</p>
+        <pre>
+            var fNum = 5.0;
+            特殊的 Number 值
+                Number.MAX_VALUE
+                Number.MIN_VALUE
+                Number.POSITIVE_INFINITY
+                Number.NEGATIVE_INFINITY
+        </pre>
+        <p>
+            几个特殊值也被定义为 Number 类型。前两个是 Number.MAX_VALUE 和 Number.MIN_VALUE，它们定义了 Number 值集合的外边界。所有 ECMAScript 数都必须在这两个值之间。不过计算生成的数值结果可以不落在这两个值之间。
+            当计算生成的数大于 Number.MAX_VALUE 时，它将被赋予值 Number.POSITIVE_INFINITY，意味着不再有数字值。同样，生成的数值小于 Number.MIN_VALUE 的计算也会被赋予值 Number.NEGATIVE_INFINITY，也意味着不再有数字值。如果计算返回的是无穷大值，那么生成的结果不能再用于其他计算。
+
+            事实上，有专门的值表示无穷大，（如你猜到的）即 Infinity。Number.POSITIVE_INFINITY 的值为 Infinity。Number.NEGATIVE_INFINITY 的值为 -Infinity。
+            由于无穷大数可以是正数也可以是负数，所以可用一个方法判断一个数是否是有穷的（而不是单独测试每个无穷数）。可以对任何数调用 isFinite() 方法，以确保该数不是无穷大。例如：
+        </p>
+        <pre>
+            var iResult = iNum * some_really_large_number;
+
+            if (isFinite(iResult)) {
+                alert("finite");
+            }
+
+            else {
+                alert("infinite");
+            }
+        </pre>
+        <p>对于浮点字面量的有趣之处在于，用它进行计算前，真正存储的是字符串。</p>
+        <p>
+            最后一个特殊值是 NaN，表示非数（Not a Number）。NaN 是个奇怪的特殊值。一般说来，这种情况发生在类型（String、Boolean 等）转换失败时。例如，要把单词 blue 转换成数值就会失败，因为没有与之等价的数值。与无穷大一样，NaN 也不能用于算术计算。NaN 的另一个奇特之处在于，它与自身不相等
+        </p>
+        <pre>
+            alert(NaN == NaN);  //输出 "false"
+            alert(isNaN("blue"));  //输出 "true"
+            alert(isNaN("666"));  //输出 "false"
+        </pre>
+        <h2>String</h2>
+        <p>String 类型的独特之处在于，它是唯一没有固定大小的原始类型。可以用字符串存储 0 或更多的 Unicode 字符，有 16 位整数表示（Unicode 是一种国际字符集，本教程后面将讨论它）。</p>
+        <p>字符串中每个字符都有特定的位置，首字符从位置 0 开始，第二个字符在位置 1，依此类推。</p>
+        <p>字符串字面量是由双引号（"）或单引号（'）声明的。</p>
+        <pre>
+            var sColor1 = "red";
+            var sColor2 = 'red';
+        </pre>
+        <pre>
+            \n	换行
+            \t	制表符
+            \b	空格
+            \r	回车
+            \f	换页符
+            \\	反斜杠
+            \'	单引号
+            \"	双引号
+            \0nnn	八进制代码 nnn 表示的字符（n 是 0 到 7 中的一个八进制数字）
+            \xnn	十六进制代码 nn 表示的字符（n 是 0 到 F 中的一个十六进制数字）
+            \unnnn	十六进制代码 nnnn 表示的 Unicode 字符（n 是 0 到 F 中的一个十六进制数字）
+        </pre>
+    </div>
+
+    <div>
+        <h1>类型转换</h1>
+        <p>大部分类型具有进行简单转换的方法，还有几个全局方法可以用于更复杂的转换。无论哪种情况，在 ECMAScript 中，类型转换都是简短的一步操作。</p>
+        <h2>转换成字符串</h2>
+        <p>3 种主要的原始类型 Boolean 值、数字和字符串都有 toString() 方法，可以把它们的值转换成字符串。</p>
+        <p>ECMAScript 定义所有对象都有 toString() 方法，无论它是伪对象，还是真对象。因为 String 类型属于伪对象，所以它一定有 toString() 方法。</p>
+        <p>Boolean 类型的 toString() 方法只是输出 "true" 或 "false"，结果由变量的值决定：</p>
+        <p>Number 类型的 toString() 方法比较特殊，它有两种模式，即默认模式和基模式。采用默认模式，toString() 方法只是用相应的字符串输出数字值（无论是整数、浮点数还是科学计数法），如下所示：</p>
+        <pre>
+            var iNum1 = 10;
+            var iNum2 = 10.0;
+            alert(iNum1.toString());	//输出 "10"
+            alert(iNum2.toString());	//输出 "10"
+        </pre>
+        <p>
+            采用 Number 类型的 toString() 方法的基模式，可以用不同的基输出数字，例如二进制的基是 2，八进制的基是 8，十六进制的基是 16。
+
+            基只是要转换成的基数的另一种加法而已，它是 toString() 方法的参数：
+        </p>
+        <pre>
+            var iNum = 10;
+            alert(iNum.toString(2));	//输出 "1010"
+            alert(iNum.toString(8));	//输出 "12"
+            alert(iNum.toString(16));	//输出 "A"
+        </pre>
+        <h2>字符串转换成数字</h2>
+        <p>ECMAScript 提供了两种把非数字的原始值转换成数字的方法，即 parseInt() 和 parseFloat()。</p>
+        <p>前者把值转换成整数，后者把值转换成浮点数。只有对 String 类型调用这些方法，它们才能正确运行；对其他类型返回的都是 NaN。</p>
+        <p>parseInt() 方法首先查看位置 0 处的字符，判断它是否是个有效数字；如果不是，该方法将返回 NaN，不再继续执行其他操作。但如果该字符是有效数字，该方法将查看位置 1 处的字符，进行同样的测试。这一过程将持续到发现非有效数字的字符为止，此时 parseInt() 将把该字符之前的字符串转换成数字。</p>
+        <pre>
+            var iNum1 = parseInt("12345red");	//返回 12345
+            var iNum1 = parseInt("0xA");	//返回 10
+            var iNum1 = parseInt("56.9");	//返回 56
+            var iNum1 = parseInt("red");	//返回 NaN
+        </pre>
+        <p>parseInt() 方法还有基模式，可以把二进制、八进制、十六进制或其他任何进制的字符串转换成整数。</p>
+        <pre>
+            var iNum1 = parseInt("10", 2);	//返回 2
+            var iNum2 = parseInt("10", 8);	//返回 8
+            var iNum3 = parseInt("10", 10);	//返回 10
+        </pre>
+        <p>parseFloat() 方法与 parseInt() 方法的处理方式相似，从位置 0 开始查看每个字符，直到找到第一个非有效的字符为止，然后把该字符之前的字符串转换成整数。
+
+            不过，对于这个方法来说，第一个出现的小数点是有效字符。如果有两个小数点，第二个小数点将被看作无效的。parseFloat() 会把这个小数点之前的字符转换成数字。这意味着字符串 "11.22.33" 将被解析成 11.22。</p>
+        <p>使用 parseFloat() 方法的另一不同之处在于，字符串必须以十进制形式表示浮点数，而不是用八进制或十六进制。该方法会忽略前导 0，所以八进制数 0102 将被解析为 102。对于十六进制数 0xA，该方法将返回 NaN，因为在浮点数中，x 不是有效字符。</p>
+        <pre>
+            var fNum1 = parseFloat("12345red");	//返回 12345
+            var fNum2 = parseFloat("0xA");	//返回 NaN
+            var fNum3 = parseFloat("11.2");	//返回 11.2
+            var fNum4 = parseFloat("11.22.33");	//返回 11.22
+            var fNum5 = parseFloat("0102");	//返回 102
+            var fNum1 = parseFloat("red");	//返回 NaN
+        </pre>
+        <h2>强制类型转换</h2>
+        <pre>
+            ECMAScript 中可用的 3 种强制类型转换如下：
+                Boolean(value) - 把给定的值转换成 Boolean 型；
+                Number(value) - 把给定的值转换成数字（可以是整数或浮点数）；
+                String(value) - 把给定的值转换成字符串；
+        </pre>
+        <p>用这三个函数之一转换值，将创建一个新值，存放由原始值直接转换成的值。这会造成意想不到的后果。</p>
+        <h2>Boolean() 函数:当要转换的值是至少有一个字符的字符串、非 0 数字或对象时，Boolean() 函数将返回 true。如果该值是空字符串、数字 0、undefined 或 null，它将返回 false。</h2>
+        <pre>
+            var abc = "hello";
+            var x = !!abc;      //true
+        </pre>
+        <h2>Number() 函数的强制类型转换与 parseInt() 和 parseFloat() 方法的处理方式相似，只是它转换的是整个值，而不是部分值。</h2>
+        <pre>
+            Number(false)	    0
+            Number(true)	    1
+            Number(undefined)	    NaN
+            Number(null)	    0
+            Number("1.2")	    1.2
+            Number("12")	    12
+            Number("1.2.3")	    NaN
+            Number(new object())	NaN
+            Number(50)	            50
+        </pre>
+        <h2>String() 是最简单的，因为它可把任何值转换成字符串。强制转换成字符串和调用 toString() 方法的唯一不同之处在于，对 null 和 undefined 值强制类型转换可以生成字符串而不引发错误：</h2>
+        <pre>
+            var s1 = String(null);	//"null"
+            var oNull = null;
+            var s2 = oNull.toString();	//会引发错误
+        </pre>
+    </div>
+
+    <div>
+        <h1>对象和数组</h1>
+        <h2>创建一个对象 var obj = {}，创建 一个数组 var arr = []; 出于速度考虑，一般不用new Object();new Array()</h2>
+        <p>在js中，数组是一种特殊的对象,使用typeof会返回object.</p>
+        <p>在js中，数组的元素的类型可以不同！(不推荐这么用)，数组元素可以是简单变量，也可以是对象、函数、甚至是数组</p>
+        <p>遍历数组最安全的方法使用 for 循环，也可以使用Array.forEach()</p>
+        <p>添加数组元素使用最佳方法push,也可以使用length属性向数组添加元素</p>
+        <p>arr.length = 0 可以清空数组</p>
+        <pre>
+            var fruits = ["Banana", "Orange", "Apple", "Mango"];
+            fruits.push("Lemon");
+            fruits[fruits.length] = "Lemon";
+        </pre>
+        <p>添加最高索引的元素可在数组中创建未定义的“洞”：</p>
+        <pre>
+            var fruits = ["Banana", "Orange", "Apple", "Mango"];
+            fruits[6] = "Lemon";
+            0   -   Banana
+            1   -   Orange
+            2   -   Apple
+            3   -   Mango
+            4   -   undefined
+            5   -   undefined
+            6   -   Lemon
+        </pre>
+        <p>没有必要使用 JavaScript 的内建数组构造器 new Array()。请使用 [] 取而代之！</p>
+        <p>如何识别数组?问题在于 JavaScript 运算符 typeof 返回 "object"：</p>
+        <pre>
+            1.为了解决这个问题，ECMAScript 5 定义了新方法 Array.isArray()
+                Array.isArray(fruits);     // 返回 true
+            2.创建您自己的 isArray() 函数以解决此问题：
+                function isArray(x) {
+                    return x.constructor.toString().indexOf("Array") > -1;
+                }
+            3.var fruits = ["Banana", "Orange", "Apple", "Mango"];
+                fruits instanceof Array     // 返回 true
+        </pre>
+        <h3>数组的常用方法</h3>
+        <pre>
+            concat()	连接两个或更多的数组，并返回结果。concat() 方法不会更改现有数组。它总是返回一个新数组。
+
+                var arr1 = ["Cecilie", "Lone"];
+                var arr2 = ["Emil", "Tobias", "Linus"];
+                var arr3 = ["Robin", "Morgan"];
+                var myChildren = arr1.concat(arr2, arr3);   // 将arr1、arr2 与 arr3 连接在一起
+
+            join()	把数组的所有元素放入一个字符串。元素通过指定的分隔符进行分隔。
+            pop()	删除并返回数组的最后一个元素
+            push()	向数组的末尾添加一个或更多元素，并返回新的长度。
+            reverse()	颠倒数组中元素的顺序。通过 sort()和reverse()可以降序排序
+            shift()	删除并返回数组的第一个元素,并把所有其他元素“位移”到更低的索引。
+            slice()	从某个已有的数组返回选定的元素,slice() 方法创建新数组。它不会从源数组中删除任何元素。
+            sort()	对数组的元素进行排序,sort() 方法以字母顺序对数组进行排序：
+            splice()	删除元素，并向数组添加新元素。
+
+                var fruits = ["Banana", "Orange", "Apple", "Mango"];
+                fruits.splice(2, 0, "Lemon", "Kiwi");
+                第一个参数（2）定义了应添加新元素的位置（拼接）。
+                第二个参数（0）定义应删除多少元素。
+                其余参数（"Lemon"，"Kiwi"）定义要添加的新元素。
+                splice() 方法返回一个包含已删除项的数组：
+
+                通过聪明的参数设定，您能够使用 splice() 在数组中不留“空洞”的情况下移除元素：
+                var fruits = ["Banana", "Orange", "Apple", "Mango"];
+                fruits.splice(0, 1);        // 删除 fruits 中的第一个元素
+
+            toSource()	返回该对象的源代码。
+            toString()	把数组转换为数组值（逗号分隔）的字符串。，并返回结果。
+            toLocaleString()	把数组转换为本地数组，并返回结果。
+            unshift()	向数组的开头添加一个或更多元素，并返回新的长度。
+            valueOf()	返回数组对象的原始值
+        </pre>
+        <pre>
+            比值函数:
+            比较函数的目的是定义另一种排序顺序。
+            比较函数应该返回一个负，零或正值，这取决于参数：
+            function(a, b){return a-b}
+            当 sort() 函数比较两个值时，会将值发送到比较函数，并根据所返回的值（负、零或正值）对这些值进行排序。
+            var points = [40, 100, 1, 5, 25, 10];
+            points.sort(function(a, b){return b - a});
+
+            对数组元素随机排序
+            var points = [40, 100, 1, 5, 25, 10];
+            points.sort(function(a, b){return 0.5 - Math.random()});
+
+            JavaScript 不提供查找数组中最大或最小数组值的内建函数。不过，在对数组进行排序之后，您能够使用索引来获得最高或最低值。
+            var points = [40, 100, 1, 5, 25, 10];
+            points.sort(function(a, b){return a - b});  //升序
+            points.sort(function(a, b){return b - a});  //降序
+        </pre>
+        <pre>
+            如果您仅仅需要找到最高或最低值，对整个数组进行排序是效率极低的方法。
+            您可以使用 Math.max.apply 来查找数组中的最高值：
+                function myArrayMax(arr) {
+                    return Math.max.apply(null, arr);
+                }
+
+                function myArrayMin(arr) {
+                    return Math.min.apply(null, arr);
+                }
+
+        </pre>
+        <pre>
+            最快的解决方法是使用“自制”方法。
+
+            function myArrayMax(arr) {
+                var len = arr.length
+                var max = -Infinity;
+                while (len--) {
+                    if (arr[len] > max) {
+                        max = arr[len];
+                    }
+                }
+                return max;
+            }
+
+            function myArrayMin(arr) {
+                var len = arr.length
+                var min = Infinity;
+                while (len--) {
+                    if (arr[len] < min) {
+                        min = arr[len];
+                    }
+                }
+                return min;
+            }
+
+        </pre>
+        <pre>
+            排序对象数组
+            var cars = [
+                {type:"Volvo", year:2016},
+                {type:"Saab", year:2001},
+                {type:"BMW", year:2010}];
+
+            cars.sort(function(a, b){return a.year - b.year});
+
+        </pre>
+
+        <pre>
+            比较字符串属性会稍复杂：
+            cars.sort(function(a, b){
+                  var x = a.type.toLowerCase();
+                  var y = b.type.toLowerCase();
+                  if (x < y) {return -1;}
+                  if (x > y) {return 1;}
+                  return 0;
+            });
+        </pre>
+        <h3>数组的迭代</h3>
+        <pre>
+            Array.forEach(myFunction) 方法为每个数组元素调用一次函数（回调函数）。
+            Array.map(myFunction) 方法通过对每个数组元素执行函数来创建新数组。不会对没有值的数组元素执行函数。不会更改原始数组。
+            Array.filter(myFunction)  方法创建一个包含通过测试的数组元素的新数组。
+            Array.reduce(myFunction)
+            Array.reduceRight(myFunction)
+            Array.every(myFunction)   方法检查所有数组值是否通过测试。
+            Array.some(myFunction)    方法检查某些数组值是否通过了测试。
+            Array.indexOf(myFunction) 方法在数组中搜索元素值并返回其位置。
+            Array.lastIndexOf(myFunction) 与 Array.indexOf(myFunction) 类似，但是从数组结尾开始搜索。
+            Array.find(myFunction) 方法返回通过测试函数的第一个数组元素的值。
+            Array.findIndex(myFunction) 方法返回通过测试函数的第一个数组元素的索引。
+        </pre>
+    </div>
+
+    <div>
+        <h2>函数</h2>
+        <p>ECMAScript 的函数实际上是功能完整的对象。</p>
+        <p>调用了没有参数的 return 语句，那么它真正返回的值是 undefined。</p>
+        <p>在函数代码中，使用特殊对象 arguments，开发者无需明确指出参数名，就能访问它们。</p>
+        <pre>
+            function sayHi() {
+              if (arguments[0] == "bye") {
+                return;
+              }
+
+              alert(arguments[0]);
+            }
+        </pre>
+        <p>还可以用 arguments 对象检测函数的参数个数，引用属性 arguments.length 即可。</p>
+        <p>与其他程序设计语言不同，ECMAScript 不会验证传递给函数的参数个数是否等于函数定义的参数个数。开发者定义的函数都可以接受任意个数的参数（根据 Netscape 的文档，最多可接受 255 个），而不会引发任何错误。任何遗漏的参数都会以 undefined 传递给函数，多余的函数将忽略。</p>
+        <p>用 arguments 对象判断传递给函数的参数个数，即可模拟函数重载：</p>
+        <pre>
+            function doAdd() {
+              if(arguments.length == 1) {
+                alert(arguments[0] + 5);
+              } else if(arguments.length == 2) {
+                alert(arguments[0] + arguments[1]);
+              }
+            }
+
+            doAdd(10);	//输出 "15"
+            doAdd(40, 20);	//输出 "60"
+        </pre>
+        <pre>
+            函数名只是指向函数的变量，那么可以把函数作为参数传递给另一个函数吗？回答是肯定的！
+            function callAnotherFunc(fnFunction, vArgument) {
+              fnFunction(vArgument);
+            }
+
+            var doAdd = new Function("iNum", "alert(iNum + 10)");
+
+            callAnotherFunc(doAdd, 10);
+        </pre>
+        <h3>ECMAScript 定义的属性 length 声明了函数期望的参数个数</h3>
+        <pre>
+            Function 对象也有与所有对象共享的 valueOf() 方法和 toString() 方法。这两个方法返回的都是函数的源代码，在调试时尤其有用。例如：
+            function doAdd(iNum) {
+              alert(iNum + 10);
+            }
+
+            document.write(doAdd.toString());   //这段代码输出了 doAdd() 函数的文本
+        </pre>
+        <h3>闭包，指的是词法表示包括不被计算的变量的函数，也就是说，函数可以使用函数之外定义的变量。</h3>
+        <h3>匿名函数 自调用函数 函数也是一种数据类型</h3>
+        <pre>
+            //把匿名函数赋值给一个变量，这样就可以通过变量进行调用
+            var fn = function(){}
+
+            //匿名函数自调用 ---- 当函数书写完成后立即调用
+            (function(){
+                console.log("我是自调用函数");
+            })();
+
+            //因为函数是一种数据类型(function类型),所以，函数可以作为参数传给另一个函数，也可以作为返回值返回。
+
+        </pre>
+
+        <h3>代码规范</h3>
+        <pre>
+            变量、函数命名必须要有意义。
+            变量的名称一般要用名词。
+            函数的名称一般要用动词。
+            操作符的前后要有空格
+            空格规范
+                if for 括号前后要有空格,for括号里的分号后面要有空格。
+                if (xxxx) {
+                    .......
+                }
+
+                for (var i = 1; i <= 10; i++) {
+                    ......
+                }
+
+                var arr = [1, 2, 3, 5, 6];  //逗号后面有空格
+        </pre>
+    </div>
+
+    <div>
+        <h2>作用域</h2>
+        <p>全局作用域：全局变量：在任何位置没有使用 var 定义的变量都被认为是全局变量，但是不推荐这样使用！！！！</p>
+        <p>局部作用域，定义函数内部的变量只在本函数可以用</p>
+        <p>在ECMAScript中没有块级作用域:如下：</p>
+        <pre>
+            {
+                var num = 5;
+            }
+            console.log(num); //输出5;
+        </pre>
+        <h2>作用域链</h2>
+        <pre>
+            全局作用域只有在浏览器关闭的时候才被销毁
+            全局作用域--- 0级链
+            定义一个函数就会在当前作用域下开辟一新的作用域链。
+
+            <srcipt>
+                function f1(){
+                    var num = 10;
+                    function f2(){
+                        var num = 0;
+                    }
+                }
+
+                var num = 6;
+
+                0级域 ------f1----num=6---
+                1级域-------f2----num=10----
+                2级域-------num=0------
+
+            </srcipt>
+        </pre>
+    </div>
+
+
+    <div>
+        <h2>javascript 预解析</h2>
+        <pre>
+            变量提升：把变量的声明提升到当前作用域的最上面，不包括变量的赋值
+            函数提升：把函数的声明提升到当前作用域的最上面，不包括函数的调用
+            每个作用域都要预解析
+            在预解析中，如果变量和函数的名称相同，函数优先
+        </pre>
+        <pre>
+            var a = b = c = 9;
+            这行代码的含义是：
+            var = 9;    //局部变量
+            b = 9;  //全局变量
+            c = 9;  //全局变量
+        </pre>
+    </div>
+
+    <div>
+        <h2>Javascript 对象</h2>
+        <h3>对象的创建和销毁都在 JavaScript 执行过程中发生，理解这种范式的含义对理解整个语言至关重要。</h3>
+        <p>javascript对象是无序属性的集合</p>
+        <pre>
+            var person = {
+              firstName: "Bill",
+              lastName : "Gates",
+              id       : 678,
+              fullName : function() {
+                return this.firstName + " " + this.lastName;
+              }
+            };
+        </pre>
+
+        <pre>
+
+            JavaScript this 关键词指的是它所属的对象。
+
+            它拥有不同的值，具体取决于它的使用位置：
+
+            在方法中，this 指的是所有者对象。
+            单独的情况下，this 指的是全局对象。
+            在函数中，this 指的是全局对象。
+            在函数中，严格模式下，this 是 undefined。
+            在事件中，this 指的是接收事件的元素。
+            像 call() 和 apply() 这样的方法可以将 this 引用到任何对象。
+
+        </pre>
+
+        <pre>
+            访问对象的属性
+                objectName.propertyName
+                objectName["propertyName"]
+
+            访问对象方法
+                objectName.methodName()
+                name = person.fullName();
+
+            如果您不使用 () 访问 fullName 方法，则将返回函数定义：
+                name = person.fullName;
+
+            方法实际上是以属性值的形式存储的函数定义。
+        </pre>
+        <h3>对象创建的方式</h3>
+        <pre>
+                javascript 对象的动态特性。可以随时添加属性和方法
+                1.字面量的方式
+                var obj = {};
+                    obj.name = "Liming";
+
+                2.new Object()调用构造函数方式
+                    var obj = new Object(); //调用构造函数 必须使用new
+                    obj.name = "Liming";    //动态增加属性
+                    obj.show = function(){
+                        console.log(this.name);
+                    }
+
+                3.创建多个对象（不能用1 2 方法）---工厂方法
+
+                function createHero(name,weapon){
+                    var hero = new Object();
+                    hero.name = name;
+                    hero.weapon = weapon;
+                    hero.attack = function(){
+                        console.log(this.name + "attack");
+                    }
+                    return hero;
+                }
+
+                var hero1 = createHero("黄忠","弓箭");
+                var hero2 = createHero("关羽","刀");
+
+                4.自定义构造函数（第一个字母大写 帕斯卡命名；类似驼峰法（第一个字符小写））
+                //使用this指针
+
+                function Hero(name,weapon){
+                    this.name = name;
+                    this.weapon = weapon;
+                    this.attack = function(){
+                        console.log(this.name + "attack");
+                    }
+                }
+                //创建 要使用new关键字
+                //注意：调用的时候必须使用new，否则就是普通的函数调用，而不是构造函数调用
+                var hero1 = new Hero("黄忠","弓箭");
+                var hero2 = new Hero("关羽","刀");
+
+                //创建一个对象，建议使用第一个方法，否则使用第四个方法。
+        </pre>
+        <h3>new 关键字 执行过程</h3>
+        <pre>
+            1.在内存中创建了一个空对象
+            2.让this指向了刚刚创建的对象。
+            3.执行构造函数，在构造函数设置属性和方法
+            4.返回当前对象。
+        </pre>
+
+        <h3>this</h3>
+        <pre>
+            1.在方法中  ----------------     这个方法所属的对象
+            2.在构造函数中  ------------     构造函数中所创建的对象
+            3.函数中   ------ ---------      window
+        </pre>
+    </div>
+
+    <div>
+        <h2>遍历和删除对象的属性</h2>
+        <pre>
+            使用for in 遍历
+            for(var key in obj){
+                console.log(key);
+                console.log(obj[key]);
+            }
+
+            //动态给对象添加属性
+            var obj = {};
+            for(var i = 0; i < 10; i++){
+                obj['a'+i] = i;
+            }
+
+            //删除对象的属性和方法
+            var obj = {
+                name:"",
+                show:function(){
+                    console.log("Hello");
+                }
+            };
+
+            delete obj.name;    //删除属性
+            delete obj.show;    //删除方法
+
+        </pre>
+    </div>
+
+
+    <div>
+        <h2>javascript内置对象</h2>
+        <h3>MDN https://developer.mozilla.org/zh-CN/docs/Web</h3>
+        <pre>
+            Math 对象
+            Math.PI 圆周率
+            Math.floor() 向下取整    Math.ceil() 向上取整
+            Math.round() 四舍五入
+            Math.abs()  绝对值
+            Math.max() 最大值 Math.min() 最小值
+            Math.sin() Math.cos()
+            Math.pow() Math.sqrt()
+
+            随机生成 0 ~255之间的随机数 [0,255]
+            function getRandomIntInclusive(min, max) {
+              min = Math.ceil(min);
+              max = Math.floor(max);
+              return Math.floor(Math.random() * (max - min + 1)) + min; //含最大值，含最小值
+            }
+            getRandomIntInclusive(0,255);
+        </pre>
+
+        <pre>
+            Date对象
+            GMT 格林威治时间
+            GMT + 0800(中国标准时间 北京时间)
+            日期的本质：计算机存储日期的实质是一个数字，距离1970-1-1相差的毫秒数 console.log(new Date().valueOf);
+            1970-1-1 以前的时间是负数
+            获取毫秒值，推荐使用getTime()，不推荐使用valueOf()
+            获取当前时间的毫秒值：Date.now() 静态方法  //只有兼容HTML5才支持，可以使用通用 var num = + new Date();
+            + new Date() 中 + 表示强制转换 相当于 Number(new Date());
+
+            Date对象的方法：
+
+            instanceof 实例 对象 用于判断变量是否是属于某个类型的对象
+
+            日期格式化字符串应该自定义方法
+            function formatDate(date){
+                if(!(date instanceof Date)){
+                    console.error('date 不是日期对象');
+                    return;
+                }
+                //开始格式化......
+                return .....
+            }
+
+
+            //计算两个日期对象的时间差 相差  天、时、分、秒
+            //问题：两个日期如何相减
+            //问题2：如何返回多个值-----返回对象的方式
+            //两个日期对象相减实际是两个日期的valueOf()值相减！！！！
+
+            function getInterval(start , end){
+                var interval = end - start; //相差的毫秒数
+                var day, hour, min, sec;
+                interval = Math.floor(interval / 1000);
+                day = interval / 60 / 60 / 24;
+                hour = interval / 60 / 60 % 24;
+                min = interval / 60 % 60;
+                sec = interval % 60;
+
+                //返回对象
+                return {
+                    day:day,
+                    hour:hour,
+                    min:min,
+                    sec:sec
+                }
+            }
+        </pre>
+
+
+        <pre>
+            Array对象
+            //如何判断一个变量是否是数组,两种方法
+                1.instanceof if(!(arr instanceof Array)){.....} 所有浏览器都支持
+                2.Array.isArray(arr)   //返回true或false 来判断是否是数组,这个有浏览器兼容问题！（支持HTML5）
+
+
+        </pre>
+    </div>
+
+</body>
+
+
+<script>
+
+
+</script>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet" href="../../../css/text.css" />
+</head>
+<body>
+    <div>
+        <h1>跨越解决方案</h1>
+        <h3>协议、域名、端口这三个之一不同就是跨越！！！</h3>
+        <h2>jsonp（主流）</h2>
+        <pre>
+            jsonp原理：
+            静态script标签的src属性
+            如：《script src="http://www.abc.com/a123.php"》《/script》
+            静态标签script会将返回的值作为js脚本处理。
+            注意：script标签不能带有属性 async（异步）,带有的话，不能跨越！script默认是同步
+
+            缺点：必须保证加载顺序，不方便程序传递参数
+        </pre>
+
+        <pre>
+            静态script标签不灵活，所以，应该使用动态script标签！！
+
+            代码：(DOM操作)-------------------------------------------------------------
+
+            var script = document.createElement('script');
+            var flag = 1;
+            script.src = 'http://www.abc.com/a123.php?flag='+flag;
+            var head = document.getElementsByTagName('head')[0];
+            head.appendChild(script);
+
+            //定义函数foo
+            //注意：这里的foo有谁调用？实际上由服务器相应的内容（foo('.json_encode($arr)）调用
+            function foo(data){
+                console.log(data);    就是对象 {username:'zhangsan',password:'123456'}
+            }
+
+            //注意：动态创建的script标签，发出去的请求是 异步请求！！！所以，为了获取数据，应该
+            让返回的内容是一个函数调用！！！
+
+            服务端代码---www.abc.com/a123.php--------------------------------
+            php
+            $arr = array("username"=>"zhangsan","password"=>"123456");
+            echo 'foo('.json_encode($arr).')';
+
+            这就是jsonp的本质！！！服务器响应端是一个函数调用 foo(实参)！！！！调用在页面声明的函数。
+
+        </pre>
+
+        <h3>解决前后端函数名字不同的问题</h3>
+        <pre>
+            //--------------前端页面----------------------
+
+            //定义回调函数 abcd
+            function abcd(data){
+                ........
+            }
+
+
+            动态script标签 传参 callback=abcd
+            script.src = 'http://www.abc.com/a123.php?callback=abcd';
+
+
+
+            //--------------服务器后端----------------------
+
+            $cb = $_GET('callback');
+            echo = $cb.'('.json_encode($arr).')';   //拼接字符串
+
+
+        </pre>
+        <h3>jquery - jsonp</h3>
+        <pre>
+            //跨域服务器端-----------------------
+            《php?
+                $cb = $_GET['callback'];
+                $arr = array("username"=>"zhangsan","password"=>"123456");
+                echo $cb.'('.json_encode($arr).');'
+
+                默认的参数名称是 callback,但是可以修改 如 $cb = $_GET['call'];
+                同时应该将页面调用添加属性 jsonp:'call'
+
+            ?》
+
+            //页面访问-----------------------------
+            $.ajax({
+                type:'get',
+                url:'http://www.abc.com/query.php',
+                dataType:'jsonp',       ---------------------   dataType 必须指定 jsonp
+                jsonp:'callback',    ----自定义参数名字，  默认就是 callback ，可以指定别的名字，对应后端的参数
+                jsonpCallback:'abc',    自定义回调函数的名字,默认的名字很长。
+                data:{},
+                success:function(data){
+                    cosole.dir(data);
+                },
+                error:function(data){
+                    console.dir(data);
+                }
+            });
+
+            注意：这个并不是 ajax,底层而是jsonp！！！，但是其调用的形式和 ajax ！！！。
+            注意：jsonp是通过url访问，所以只支持 get，而不支持 post！！
+
+        </pre>
+
+        <h3>模拟 jquery的jsonp实现</h3>
+        <pre>
+
+
+
+        </pre>
+
+        <h2>document.domain+iframe</h2>
+        <h2>location.hash+iframe</h2>
+        <h2>window.name+iframe</h2>
+        <h2>window.postMessage</h2>
+        <h2>第三方插件</h2>
+        <pre></pre>
+    </div>
+</body>
+</html>

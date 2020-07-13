@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebAPI2</title>
+    <link type="text/css" rel="stylesheet" href="../../css/text.css" />
+    <script src="js001.js"></script>
+</head>
+<body>
+    <div>
+        <h1>BOM对象模型</h1>
+        <h2>window对象 不要定义和window重名的变量</h2>
+        <pre>
+            浏览器的顶级对象  window
+            当我们使用  window 的成员时，window可以省略 比如 ：
+            window.alert - alert
+            window.prompt = prompt
+            window.document = document
+
+            //我们定义的全局变量都是属于window的
+            比如 : var age = 20;  console.log(window.age); //18
+
+            //慎用window里面的成员来定义我们的变量！！！！！
+            比如 name top
+            top 是 window的属性 不能被赋值！！！！
+
+        </pre>
+        <h2>对话框 alert prompt confirm</h2>
+
+        <h1>这三个对话框在开发中我们都不用！！难看 + 体验不好</h1>
+        <pre>
+            //prompt
+            var userName = prompt('请输入用户名','张三');
+            console.log(userName);
+
+            //confirm
+            var issure = confirm('是否要删除数据？');
+            if(issure){
+                console.log(issure);
+            }
+
+        </pre>
+
+        <h2>页面加载问题</h2>
+        <h1>onload 不但是window的，还可以用在元素上，比如img div 等加载完毕</h1>
+        <pre>
+            window.onload 页面加载完成后执行。指的是页面上的所有元素创建完毕，外部资源（js css 图片）下载完毕
+            所以在页面底部写 script标签效率更高，因为不用等待 js css 和大量的图片下载完毕。
+            推荐在页面底部写 script
+
+            window.onunload 当页面卸载的时候执行。在onunload中所有的对话框都无法使用，因为window被冻结，会阻止所有对话框执行。
+            window.onunload = function(){
+                ........
+            }
+
+            F5 按键 : 会发生 先 onunload 事件 ，即卸载；然后在加载 onload 事件 。
+
+        </pre>
+
+        <h2>定时器</h2>
+        <pre>
+            setTimeout()    定时炸弹 隔一段时间执行，并且只会执行一次
+            setInterval()   闹钟 隔一段时间执行，并且会重复执行。
+
+            setTimeout 有两个参数： 第一个：要执行的函数 第二个：间隔的时间   返回值是一个整数，这个数就是定时器的标识
+            clearTimeout 取消定时器
+
+            var btn1 = document.getElementById('btn001');
+            var btn2 = document.getElementById('btn002');
+
+            var timeid;
+            btn1.onclick = function () {
+
+                //创建定时器 这里传命名函数和匿名函数都一样
+                timeid =setTimeout(function () {
+                    console.log('开始爆炸');
+                },3000);
+            }
+
+            //取消定时器 setTimeout
+            btn2.onclick = function () {
+                clearTimeout(timeid);
+            }
+
+        </pre>
+        <div>
+            <button id="btn001">开始</button>
+            <button id="btn002">取消</button>
+        </div>
+        <script>
+            var btn1 = document.getElementById('btn001');
+            var btn2 = document.getElementById('btn002');
+            var timeid;
+            btn1.onclick = function () {
+                timeid =setTimeout(function () {
+                    console.log('开始爆炸');
+                },3000);
+            }
+            
+            btn2.onclick = function () {
+                clearTimeout(timeid);
+            }
+            
+        </script>
+
+        <h2>案例：删除成功后显示提示 3秒自动消失</h2>
+        <pre>
+            var btn3 = document.getElementById('btn003');
+            var timer2;
+            btn3.onclick = function () {
+                //开始删除
+                //删除成功提示
+                var tips = document.getElementById('tips');
+                tips.style.display = 'block';
+                timer2 = setTimeout(function () {
+                    tips.style.display = 'none';
+                },3000);
+            }
+        </pre>
+        <button id="btn003" style="font-size: 30px;background-color: red" >删除</button>
+        <div id="tips" style="display: none;border-radius: 5px;opacity: 0.6;
+            position: fixed;left: 50%;top: 50%;text-align: center;padding: 20px;
+            background-color: black;font-size: 40px;color: white;font-weight: bold;">删除成功</div>
+        <script>
+            var btn3 = document.getElementById('btn003');
+            var timer2;
+            btn3.onclick = function () {
+                //开始删除
+                //删除成功提示
+                var tips = document.getElementById('tips');
+                tips.style.display = 'block';
+                timer2 = setTimeout(function () {
+                    tips.style.display = 'none';
+                },3000);
+            }
+        </script>
+
+        <h2>setInterval 闹钟 特点重复执行</h2>
+
+        <pre>
+            var start = document.getElementById('start');
+            var end = document.getElementById('end');
+            var time = document.getElementById('spantime');
+            start.onclick = function () {
+                var ctime = new Date().getTime();
+                setInterval(function () {
+                    ctime += 1000;
+                    time.innerText = getTimeText(ctime);
+                },1000);
+            }
+
+            function getTimeText(ctime) {
+                var cdate = new Date(ctime);
+                return formatValue(cdate.getHours()) + ":"
+                    + formatValue(cdate.getMinutes()) + ":"
+                    + formatValue(cdate.getSeconds());
+            }
+
+            function formatValue(value) {
+                return value < 10 ? "0" + value :value + "";
+            }
+        </pre>
+
+        <div>
+            <button id="start" style="font-size: 20px;font-weight: bold;">开始计时</button>
+            <button id="end" style="font-size: 20px; font-weight: bold; ">取消计时</button>
+            <span id="spantime" style="font-size: 30px; color: red; font-weight: bold; "></span>
+        </div>
+
+        <script>
+            var start = document.getElementById('start');
+            var end = document.getElementById('end');
+            var time = document.getElementById('spantime');
+            start.onclick = function () {
+                var ctime = new Date().getTime();
+                setInterval(function () {
+                    ctime += 1000;
+                    time.innerText = getTimeText(ctime);
+                },1000);
+            }
+
+            function getTimeText(ctime) {
+                var cdate = new Date(ctime);
+                return formatValue(cdate.getHours()) + ":" + formatValue(cdate.getMinutes()) + ":" + formatValue(cdate.getSeconds());
+            }
+
+            function formatValue(value) {
+                return value < 10 ? "0" + value :value + "";
+            }
+
+        </script>
+
+
+        <h2>倒计时 距离光棍节还有 几天 计时 几份 几秒</h2>
+        <p style="font-size: 30px; font-weight: bold; color: #F60;">
+            <span id="spanDay"></span>
+            <span id="spanHour"></span>
+            <span id="spanMin"></span>
+            <span id="spanSec"></span>
+        </p>
+        <script>
+            var spanDay = document.getElementById('spanDay');
+            var spanHour = document.getElementById('spanHour');
+            var spanMin = document.getElementById('spanMin');
+            var spanSec = document.getElementById('spanSec');
+
+            //倒计时
+            var gDate = new Date(2020,10,11,0,0,0).getTime();
+            setInterval(function () {
+                var cDate = new Date().getTime();
+                var djs = getDaoJS(gDate - cDate);
+                spanDay.innerText = formatValue(djs.day) + "天";
+                spanHour.innerText = formatValue(djs.hour) + "时";
+                spanMin.innerText = formatValue(djs.min) + "分";
+                spanSec.innerText = formatValue(djs.sec) + "秒";
+            },1000);
+
+            function getDaoJS(value) {
+                var mday = parseInt(value / 1000 / 60 /60 / 24);
+                var mhour = parseInt(value / 1000 / 60 / 60) % 24;
+                var mmin = parseInt(value / 1000 / 60) % 60;
+                var msec = parseInt(value / 1000) % 60;
+                return {
+                    day : mday,
+                    hour : mhour,
+                    min : mmin,
+                    sec : msec
+                }
+            }
+
+        </script>
+
+        <h2>浏览器 location 对象</h2>
+        <h1>location对象的主要作用：获取或设置地址栏上的地址。</h1>
+        <pre>
+            属性 href
+            location.href : 获取或设置地址栏的内容
+
+            三个方法：
+            assign() 委派：作用和href的作用一样，可以让页面跳转指定的地方。
+            location.assign('http://www.sina.com.cn');
+            location.href = 'http://www.sian.com.cn';
+            //href 和 assign 都可以记录历史。
+
+            location.replace('http://www.sina.com.cn') 作用 替换地址栏的地址，单并不记录历史（后退按钮不可用）
+
+            location.reload() 功能就是重新加载 和 F5键一样的。
+            reload(true) 强制从服务器获取数据 ---> ctrl + F5
+            reload(false) 如果浏览器有缓存，直接从缓存获取页面 ---> F5
+
+
+        </pre>
+
+
+        <h2>location 其他属性</h2>
+
+
+        <pre>
+            URL:组成
+            scheme://host:port/path?query#fragment
+
+            比如：http://www.itheima.com/a/b/c/index.html?name=zs&age=18#bottom
+
+            scheme:通信协议 http ftp maito
+            host:主机 IP地址或域名
+            port:端口
+            path:路径
+            query:查询
+            fragment 锚点
+
+            location 对象中
+            hash --- 锚点
+            host --- 主机
+            pathname --- 文件路径
+            protocol --- 协议
+            port --- 端口 ""表示80
+            search --- 表示查询数据
+
+        </pre>
+
+        <h2>浏览器的前进后退</h2>
+        <pre>
+            window 有一个对象 histroy
+            histroy有两个方法 forward() 和 back() 分别表示前进和后退。也可以用histroy.go(参数)代替。
+            histroy.forward()  == histroy.go(1)
+            histroy.back() == histroy.go(-1)
+
+            说明：在做互联网的应用时，浏览器都包含了 前进 后退 刷新 这些功能，我们不需要使用histroy.go()
+            在做其他应用，可以使用这个功能。
+        </pre>
+
+        <h2>navigator.userAgent</h2>
+        <pre>
+            window的对象 navigator有一个属性 userAgent 记录 操作系统的版本 浏览器的版本
+            通过这个属性我们可以判断是PC端还是移动端。
+
+        </pre>
+
+        <h2>简单动画</h2>
+        <pre>
+            var dbox = document.getElementById('dbox');
+            var btnDH = document.getElementById('btnDH');
+            btnDH.onclick = function (e) {
+                setInterval(function () {
+                    if(dbox.offsetLeft > 600){
+                        dbox.style.left = '100px';
+                    }
+                    dbox.style.left = dbox.offsetLeft + 5 + 'px';
+                },100);
+            }
+
+            offsetLeft这个属性是一个只读属性。
+
+            如果多次点击就会创建多个计时器，改进方法：保证页面只有一个定时器
+
+            var dbox = document.getElementById('dbox');
+            var btnDH = document.getElementById('btnDH');
+
+            var timeID = null;
+
+            btnDH.onclick = function (e) {
+                if(timeID){
+                    clearInterval(timeID);
+                    timeID = null;
+                }
+
+                timeID = setInterval(function () {
+                    if(dbox.offsetLeft > 600){
+                        dbox.style.left = '100px';
+                    }
+                    dbox.style.left = dbox.offsetLeft + 5 + 'px';
+                },100);
+            }
+
+
+        </pre>
+        <button id="btnDH">开始动画</button>
+        <div id="dbox" style="background-color: red;width: 50px; height: 50px;position: absolute;"></div>
+        <script>
+            var dbox = document.getElementById('dbox');
+            var btnDH = document.getElementById('btnDH');
+
+            var timeID = null;
+
+            btnDH.onclick = function (e) {
+                if(timeID){
+                    clearInterval(timeID);
+                    timeID = null;
+                }
+
+                timeID = setInterval(function () {
+                    if(dbox.offsetLeft > 600){
+                        dbox.style.left = '100px';
+                    }
+                    dbox.style.left = dbox.offsetLeft + 5 + 'px';
+                },100);
+            }
+
+        </script>
+    </div>
+</body>
+</html>

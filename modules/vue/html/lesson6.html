@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/vue.js"></script>
+    <script>
+        //组件高级用法
+        //---------组件的嵌套关系 table>tr>td 元素依赖
+        //---------组件插槽 slot
+        //---------动态组件(创建 销毁 保持组件状态)\
+
+        window.onload = function () {
+            new Vue({
+                el:"#root",
+                data:{
+                    flag:'my-tr',
+                    flag2:'my-change1'
+                },
+                filters:{
+
+                },
+                methods:{
+                    getBingJing:function () {
+                        return {
+                            title:'北京大学',
+                            list:[
+                                {id:1001,name:"李明",age:20,depart:"计算机科学与技术",org:"党员"},
+                                {id:1002,name:"张丽",age:20,depart:"物理学",org:"党员"},
+                                {id:1003,name:"王平",age:20,depart:"数学系",org:"非党员"},
+                                {id:1004,name:"李丽",age:20,depart:"中文系",org:"非党员"},
+                                {id:1005,name:"苏克",age:20,depart:"软件工程",org:"党员"},
+                                {id:1006,name:"James",age:20,depart:"自动化",org:"非党员"},
+                                {id:1007,name:"Kobe",age:20,depart:"飞行器制造",org:"党员"}
+                            ]
+                        };
+                    }
+                },
+                //定义局部组件
+                //---------------------------------components start-------------------
+                components:{
+                    'my-tr':{
+                        template:"#myTr",
+                        data:function () {
+                            return {
+
+                            }
+                        }
+                    },
+                    'my-slot':{
+                        template:"#mySlot"
+                    },
+                    'my-change1':{
+                        template:"<h1>{{x}}</h1>",
+                        data:function () {
+                            return {
+                                x:Math.random()
+                            }
+                        }
+                    },
+                    'my-change2':{
+                        template:"<h3>{{x}}</h3>",
+                        data:function () {
+                            return {
+                                x:Math.random()
+                            }
+                        }
+                    }
+
+                }
+                //---------------------------------components end-------------------
+            });
+        }
+
+
+    </script>
+
+    <!--  template start  -->
+    <template id="myTr">
+        <tr>
+            <td>aaa</td>
+            <td>bbb</td>
+        </tr>
+    </template>
+
+    <template id="mySlot">
+        <div style="background: #eee">
+            <h1>My Slot</h1>
+            <p>content1...........</p>
+            <slot name="s1"></slot>
+            <p>content2...........</p>
+            <slot name="s2"></slot>
+            <h3>Bottom......</h3>
+        </div>
+    </template>
+    <!--  template end  -->
+
+    <!--  style start  -->
+    <style>
+
+    </style>
+    <!--  style end  -->
+</head>
+<body>
+<div id="root">
+
+    <!--  组件高级用法  -->
+
+    <!-- 1 is指令  -->
+    <table>
+        <!--  is指令:表示这是一个组件，应该按组件的方式解析  -->
+        <tr is="my-tr"></tr>
+    </table>
+
+    <!-- 2 插槽  -->
+    <my-slot>
+        <ul slot="s1">
+            <li>1111</li>
+            <li>2222</li>
+            <li>3333</li>
+        </ul>
+        <ul slot="s2">
+            <li>AAA</li>
+            <li>BBB</li>
+        </ul>
+    </my-slot>
+
+
+    <!-- 3 动态组件  -->
+    <h2>动态组件</h2>
+    <button @click="flag='my-tr'">my-tr</button>
+    <button @click="flag='my-slot'">my - slot</button>
+    <!--  :is 表示绑定一个data的一个变量  -->
+    <component :is="flag"></component>
+    <!--  动态组件的状态  -->
+    <button @click="flag2='my-change1'">my-change1</button>
+    <button @click="flag2='my-change2'">my-change2</button>
+    <!--  :is 表示绑定一个data的一个变量  -->
+    <component :is="flag2"></component>
+
+    <!--  可以缓存非活动组件 如果有的组件创建后不会改变，那么就建议使用 keep-alive ，这样可以提高性能，不必每次切换都重新创建  -->
+    <keep-alive>
+        <component :is="flag2"></component>
+    </keep-alive>
+
+</div>
+
+</body>
+</html>

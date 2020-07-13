@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jQuery</title>
+    <link type="text/css" rel="stylesheet" href="../../../css/text.css" />
+    <script src="jquery-1.12.2.min.js"></script>
+    <style>
+        *{margin: 0;padding: 0;}
+        .active{background-color: #faf;}
+        .main{display: none;}
+        .selected{display: block;}
+        .tab{overflow: hidden;}
+        .tab-item{float: left;list-style: none;width: 100px;text-align: center;padding: 5px;cursor: pointer;}
+        .red,.green,.yellow,.blue{}
+    </style>
+    <script>
+        $(function () {
+            $("#uu001>li>a").click(alinkClick);
+
+            //2.tab页切换
+            $(".tab>li").mouseover(function () {
+                $(this).siblings("li").removeClass("active");
+                $(this).addClass("active");
+                var index = $(this).index();
+
+                $(".products>div:eq("+index+")").siblings("div").removeClass("selected").addClass("main");
+                $(".products>div:eq("+index+")").removeClass("main").addClass("selected");
+            });
+
+        });
+        //注册事件
+        function alinkClick() {
+            //显示本级ul
+            //隐藏其他
+            $(this).parent().siblings("li").find("a").css({"backgroundColor":"white"});
+            $(this).parent().siblings("li").find("ul").hide(500);
+            $(this).css({"backgroundColor":"lightGreen","display":"block"});
+            $(this).siblings("ul").show(500);
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <h1>jquery 网址</h1>
+        <pre>
+            jquery 官网：http://jquery.com
+            jquery 在线API:http://api.jquery.com  || http://api.jquery.com/api(xml文件)
+            jquery UI:http://jqueryui.com
+        </pre>
+        <h1>javascript框架库：一个js文件，封装了很多函数和处理兼容性的代码</h1>
+        <h2>jquery 链式编程 隐式迭代 插件丰富 是它的特点 js的兼容在jQuery中不必担心，但是CSS还是要小心！！！</h2>
+        <h2>在引入jquery.js时，开发用正常版，上线用压缩版jquery.min.js</h2>
+        <h2>DOM的顶级对象 document；BOM的顶级对象 window；jquery的顶级对象 jQuery - $ </h2>
+        <pre>
+            DOM 的 window.onload 页面是所有元素（标签 图片）都下载完才执行。比较慢
+            而 $(function(){...}); 是页面的基本元素加载完就执行，速度快。
+            $(document).ready(function(){....});  === $(function(){......});
+        </pre>
+        <h1>jQuery对象和DOM对象互相转换</h1>
+        <pre>
+            var btnDom = document.getElementById('btn');    //btnDom是一个DOM对象
+            var btn = $(btnDom);    //将btnDom对象转换成jQuery对象btn;
+            $(btn).click(function(){
+                $(this).css({...});     //这里的this也要转换成 jquery对象。
+            });
+
+            //DOM对象和jquery对象可以相互转换
+            //DOM对象转jquery对象 $(DOM对象) -> jquery对象
+            //jquery对象转DOM对象 $("#btn")[0] -> DOM对象 或者 $("#btn").get(0) -> DOM对象
+
+        </pre>
+
+        <h1>jquery 的常用方法</h1>
+        <pre>
+            .text()   // text相当于 DOM的 innerText 或 textContent.
+            .html()     // 设置或获取 html 相当于 innerHTML
+            .val()      //设置或获取value
+            .css({...键值对..})      //设置css样式
+            .show(1000);    显示
+            .hide(1000);    隐藏
+            .index()    获取索引值 如
+
+                    $("ul > li").click(function(){
+                        var index = $(this).index();
+
+                    });
+
+            .siblings(选择器) 获取当前元素的同胞元素 原始元素不包含在同胞元素中
+            .find(选择器) 当前元素的后代元素
+
+        </pre>
+
+        <h1>jquery 选择器</h1>
+
+        <pre>
+            $("p.ptext") 选择p元素且类名是ptext
+
+            多条件选择器获取元素 $(条件1,条件2,条件3,...)   如 $("p,div,li,span,.className")
+
+            后代选择器：$("ul li")  （儿子 孙子 ...）  所有的子元素 可能是直接子元素，也可以是间接子元素
+            子代选择器 $("p > span")  (儿子) 直接子元素
+
+            $("*") 所有元素
+            $("#divid > *")  id 为 divid下所有直接子元素
+
+            偶数 $(ul>li:even)  偶数li 在页面第一条的下标索引是0 所以是偶数
+            奇数 $(ul>li:odd)  奇数li 在页面第二条的下标索引是1 所以是奇数
+
+            索引选择器
+            $("ul li:eq(3)")	列表中的第四个元素（index 从 0 开始）
+            $("ul li:gt(3)")	列出 index 大于 3 的元素
+            $("ul li:lt(3)")	列出 index 小于 3 的元素
+
+        </pre>
+
+
+        <pre>
+            选择器	实例	选取
+
+            1   *	$("*")	所有元素
+            2   #id	$("#lastname")	id="lastname" 的元素
+            3   .class	$(".intro")	所有 class="intro" 的元素
+            4   element	$("p")	所有 p 元素
+            5   .class.class	$(".intro.demo")	所有 class="intro" 且 class="demo" 的元素
+
+            6   :first	$("p:first")	第一个 p 元素
+            7   :last	$("p:last")	最后一个 p 元素
+            8   :even	$("tr:even")	所有偶数 tr 元素
+            9   :odd	$("tr:odd")	所有奇数 tr 元素
+
+            10  :eq(index)	$("ul li:eq(3)")	列表中的第四个元素（index 从 0 开始）
+            11  :gt(no)	$("ul li:gt(3)")	列出 index 大于 3 的元素
+            12  :lt(no)	$("ul li:lt(3)")	列出 index 小于 3 的元素
+            13  :not(selector)	$("input:not(:empty)")	所有不为空的 input 元素
+
+            14  :header	$(":header")	所有标题元素 h1 - h6
+            15  :animated	 	所有动画元素
+
+            16  :contains(text)	$(":contains('W3School')")	包含指定字符串的所有元素
+            17  :empty	$(":empty")	无子（元素）节点的所有元素
+            18  :hidden	$("p:hidden")	所有隐藏的 p 元素
+            19  :visible	$("table:visible")	所有可见的表格
+
+            20  s1,s2,s3	$("th,td,.intro")	所有带有匹配选择的元素
+
+            21  [attribute]	$("[href]")	所有带有 href 属性的元素
+            22  [attribute=value]	$("[href='#']")	所有 href 属性的值等于 "#" 的元素
+            23  [attribute!=value]	$("[href!='#']")	所有 href 属性的值不等于 "#" 的元素
+            24  [attribute$=value]	$("[href$='.jpg']")	所有 href 属性的值包含以 ".jpg" 结尾的元素
+
+            25  :input	$(":input")	所有 input 元素
+            26  :text	$(":text")	所有 type="text" 的 input 元素
+            27  :password	$(":password")	所有 type="password" 的 input 元素
+            28  :radio	$(":radio")	所有 type="radio" 的 input 元素
+            29  :checkbox	$(":checkbox")	所有 type="checkbox" 的 input 元素
+            30  :submit	$(":submit")	所有 type="submit" 的 input 元素
+            31  :reset	$(":reset")	所有 type="reset" 的 input 元素
+            32  :button	$(":button")	所有 type="button" 的 input> 元素
+            33  :image	$(":image")	所有 type="image" 的 input 元素
+            34  :file	$(":file")	所有 type="file" 的 input 元素
+
+            35  :enabled	$(":enabled")	所有激活的 input 元素
+            36  :disabled	$(":disabled")	所有禁用的 input 元素
+            37  :selected	$(":selected")	所有被选取的 input 元素
+            38  :checked	$(":checked")	所有被选中的 input 元素
+        </pre>
+        <h1>折叠导航</h1>
+        <pre>
+            //页面加载
+            $(function () {
+                $("#uu001>li>a").click(alinkClick);
+            });
+
+            //注册事件
+            function alinkClick() {
+                //显示本级ul
+                //隐藏其他
+                $(this).parent().siblings("li").find("a").css({"backgroundColor":"white"});
+                $(this).parent().siblings("li").find("ul").hide(500);
+                $(this).css({"backgroundColor":"lightGreen","display":"block"});
+                $(this).siblings("ul").show(500);
+            }
+        </pre>
+        <div>
+            <ul id="uu001">
+                <li>
+                    <a href="javascript:void(0);" >辽宁</a>
+                    <ul>
+                        <li>沈阳</li>
+                        <li>大连</li>
+                        <li>鞍山</li>
+                        <li>抚顺</li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:void(0);">河北</a>
+                    <ul>
+                        <li>石家庄</li>
+                        <li>邯郸</li>
+                        <li>保定</li>
+                        <li>廊坊</li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:void(0);">山东</a>
+                    <ul>
+                        <li>济南</li>
+                        <li>青岛</li>
+                        <li>聊城</li>
+                        <li>泰安</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+
+        <h1>jQuery CSS 操作函数</h1>
+        <pre>
+            css()	设置或返回匹配元素的样式属性。
+
+                1 $(selector).css(name)   返回第一个匹配元素的 CSS 属性值。如： $("p").css("color");
+                2 $(selector).css(name,value) 设置所有匹配元素的指定 CSS 属性。 $("p").css("color","red");
+
+                3 $(selector).css(name,function(index,value))
+                    index - 可选。接受选择器的 index 位置
+                    oldvalue - 可选。接受 CSS 属性的当前值。
+
+                4 $(selector).css({property:value, property:value, ...})
+
+            ==================================================================================================
+
+            height()	设置或返回匹配元素的高度。
+
+                1   $(selector).height()
+                    返回高度：返回第一个匹配元素的高度。如果不为该方法设置参数，则返回以像素计的匹配元素的高度。
+
+                2   $(selector).height(length) 设置高度 : 设置所有匹配元素的高度。如果没有规定长度单位，则使用默认的 px 单位。
+                    如：$("p").height(50);  ==   $("p").height("50px");  即 50px
+                    如：$("p").height("50%");
+                    如：$("p").height("20em");
+
+                3   使用函数来设置高度
+                    $(selector).height(function(index,oldheight))
+                    index - 可选。接受选择器的 index 位置
+                    oldvalue - 可选。接受选择器的当前值。
+
+            width()	设置或返回匹配元素的宽度。用法参照  height()方法。
+
+            ========================================================================================================
+
+            scrollLeft()	设置或返回匹配元素相对滚动条左侧的偏移。即水平位置
+
+                1   $(selector).scrollLeft()    返回第一个匹配元素的水平滚动条位置。
+
+                2   $(selector).scrollLeft(position)    设置所有匹配元素的水平滚动条位置。规定以像素计的新位置。
+                    $("div").scrollLeft(100);   即 100px
+
+
+            scrollTop()	设置或返回匹配元素相对滚动条顶部的偏移。垂直位置，用法参考 scrollLeft
+
+            =========================================================================================================
+
+            position()	返回第一个匹配元素相对于父元素的位置。
+                        该方法返回的对象包含两个整型属性：top 和 left，以像素计。此方法只对可见元素有效。
+
+            $(selector).position()
+
+            x=$("p").position();
+            $("#span1").text(x.left);
+            $("#span2").text(x.top);
+
+            ========================================================================================================
+
+            offset()	返回第一个匹配元素相对于文档的位置。
+
+                1   $(selector).offset()    返回第一个匹配元素的偏移坐标。
+                    该方法返回的对象包含两个整型属性：top 和 left，以像素计。此方法只对可见元素有效。
+
+                2   $(selector).offset(value)   设置所有匹配元素的偏移坐标。
+
+                    newPos={left:"0",top:"100"};
+                    $("p").offset(newPos);
+
+                    $("p").offset($("span").offset());  使用已有对象的位置来定位元素。
+
+                3   $(selector).offset(function(index,oldoffset))   使用函数来设置偏移坐标
+
+            =======================================================================================================
+
+            offsetParent()	返回最近的定位祖先元素。
+                定位元素指的是元素的 CSS position 属性被设置为 relative、absolute 或 fixed 的元素。
+
+                1   $(selector).offsetParent()
+                    $("p").offsetParent().css("background-color","red");
+
+        </pre>
+
+        <h1>jQuery 属性操作方法</h1>
+        <pre>
+            addClass()	向匹配的元素添加指定的类名。
+
+                addClass() 方法向被选元素添加一个或多个类。该方法不会移除已存在的 class 属性，仅仅添加一个或多个 class 属性。
+                如需添加多个类，请使用空格分隔类名。
+
+                1   $(selector).addClass(class)
+                    例如：$("p:first").addClass("intro");
+                    $("p:first").removeClass("intro").addClass('main');
+
+                2   使用函数来添加类
+                    $(selector).addClass(function(index,oldclass))
+                    index - 可选。选择器的 index 位置。
+                    class - 可选。选择器的旧的类名
+
+            =========================================================================================================
+
+            removeClass()	从所有匹配的元素中删除全部或者指定的类。
+
+                1   $(selector).removeClass(class)
+                    如需移除若干类，请使用空格来分隔类名。
+                    如果不设置该参数，则会移除所有类。
+
+                2   使用函数来移除类
+                    $(selector).removeClass(function(index,oldclass))
+
+                    $("button").click(function(){
+                          $('ul li').removeClass(function() {
+                          return 'listitem_' + $(this).index();
+                        });
+                      });
+
+            =========================================================================================================
+
+            toggleClass()	从匹配的元素中添加或删除一个类。
+
+            该方法检查每个元素中指定的类。如果不存在则添加类，如果已设置则删除之。这就是所谓的切换效果。
+            不过，通过使用 "switch" 参数，您能够规定只删除false或只添加类true。
+
+            1   $(selector).toggleClass(class,switch)
+                $("p").toggleClass("main");
+
+            2   $(selector).toggleClass(function(index,class),switch)   使用函数来切换类
+                $('ul li').toggleClass(function(){
+                  return 'listitem_' + $(this).index();
+                });
+
+            ========================================================================================================
+
+            hasClass()	检查匹配的元素是否拥有指定的类。
+
+            $(selector).hasClass(class) 如： alert($("p:first").hasClass("intro"));
+
+            =======================================================================================================
+
+            attr()	设置或返回匹配元素的属性和值。
+
+
+            1   返回被选元素的属性值。
+                $(selector).attr(attribute)
+
+            2   设置被选元素的属性和值。
+                $(selector).attr(attribute,value)
+
+            3   使用函数来设置属性/值
+                $(selector).attr(attribute,function(index,oldvalue))
+
+            4   设置多个属性/值对
+                $(selector).attr({attribute:value, attribute:value ...})
+
+            ========================================================================================================
+
+
+            removeAttr()	从所有匹配的元素中移除指定的属性
+
+            $(selector).removeAttr(attribute)
+            $("p").removeAttr("id");
+
+            =======================================================================================================
+
+
+            html()	设置或返回匹配的元素集合中的 HTML 内容。
+
+            1   返回元素内容
+                $(selector).html()
+
+            2   设置元素内容
+                $(selector).html(content)
+
+            3   使用函数来设置元素内容
+                $(selector).html(function(index,oldcontent))
+
+            ========================================================================================================
+
+            val()	设置或返回匹配元素的值。
+
+            val() 方法返回或设置被选元素的值。
+            元素的值是通过 value 属性设置的。该方法大多用于 input 元素。
+            如果该方法未设置参数，则返回被选元素的当前值。
+
+            1   返回 Value 属性
+                $(selector).val()
+
+            2   设置 Value 属性的值
+                $(selector).val(value)
+
+            3   使用函数设置 Value 属性的值
+                $(selector).val(function(index,oldvalue))
+
+        </pre>
+
+        <h1>jQuery 遍历 兄弟元素</h1>
+        <pre>
+            next([selector])  当前元素的下一个兄弟元素
+            nextAll([selector])   当前元素的后面的所有兄弟元素
+            nextUntil() 当前元素向前至给定元素之间的兄弟元素(不包括自身和给定的元素)
+            prev()  当前元素的前一个兄弟元素
+            prevAll()   当前元素的前面的所有兄弟元素
+            preUntil()  当前元素向前至给定元素之间的兄弟元素(不包括自身和给定的元素)
+            siblings()  当前元素的所有兄弟元素（不包括自身）
+
+        </pre>
+
+        <h1>jquery 变量 祖先元素</h1>
+        <pre>
+            parent([selector])    返回被选元素的直接父元素。
+            parents([selector])   方法返回被选元素的所有祖先元素，它一路向上直到文档的根元素 html)。
+            parentsUntil( [selector ] [, filter ] )  方法返回介于两个给定元素之间的所有祖先元素。
+        </pre>
+
+        <h1>tab页选择</h1>
+        <pre>
+
+        </pre>
+        <div>
+            <ul class="tab">
+                <li class="tab-item active">红色</li>
+                <li class="tab-item">绿色</li>
+                <li class="tab-item">黄色</li>
+                <li class="tab-item">蓝色</li>
+            </ul>
+            <div class="products">
+                <div class="main selected" style="background-color: red;width: 500px;height:200px;"></div>
+                <div class="main" style="background-color: green;width: 500px;height:200px;"></div>
+                <div class="main" style="background-color: yellow;width: 500px;height:200px;"></div>
+                <div class="main" style="background-color: blue;width: 500px;height:200px;"></div>
+            </div>
+        </div>
+
+        <h1>链式编程的重要一点就是调用的方法返回值仍然是这个对象！！！</h1>
+        <pre>
+            $(".tab>li").mouseover(fuction(){
+                $(this).removeClass(...).addClass(...);
+            }).click(functon(){
+                $(this).removeClass(...).addClass(...);
+            }).mouseout(function(){
+            });
+        </pre>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue_0004</title>
+    <script src="../js/vue.js"></script>
+    <script>
+        //事件 event
+        /*
+            阻止默认行为
+            阻止事件传播
+                事件传播有2种：
+                    ie：由内到外     火狐：由外到内
+
+         */
+
+        window.onload = function () {
+            //全局指令
+            Vue.filter("addZero",function (num) {
+                return num<10?"0"+num:num;
+            });
+
+
+            new Vue({
+                el:"#root",
+                data:{
+                    curTime:1561362400261
+                },
+                //局部指令
+                filters:{
+                    number:function (num,n=2) {
+                        //console.log(num);
+                        //console.log(n);
+                        return num.toFixed(n);
+                    },
+                    dateFormat:function (date) {
+                        let  d = new Date(date);
+                        //var d = new Date(date); //与上面的let d = .....等价
+                        return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+                    }
+                },
+                methods:{
+                    showA:function () {
+                        console.log("aaa");
+                    },
+                    showB:function () {
+                        console.log("bbb");
+                    },
+                    showC:function () {
+                        console.log("ccc");
+                    },
+                    enter:function (e) {
+                        if(e){
+                            console.log(e);
+                        }
+                        console.log("enter...");
+                    },
+                    key:function (e) {
+                        if(e){
+                            console.log(e);
+                        }
+                        console.log("key...");
+                    }
+                }
+            });
+        }
+
+
+    </script>
+
+    <style>
+        .a{padding: 20px;background: #393;width: 200px;}
+        .b{padding: 20px;background: #f60;}
+        .c{padding: 20px;background: #ff0;}
+        .d{padding: 20px;background: #00f;}
+
+    </style>
+</head>
+<body>
+<div id="root">
+    <!--  阻止事件冒泡  -->
+    <div @click="showA" class="a">a
+        <div @click="showB" class="b">b
+            <div @click="showC" class="c">c</div>
+            <!--  阻止事件向外面传播 防止点击里层的元素调用外面的一个个事件处理  -->
+            <div @click.stop="showC" class="d">stop</div>
+        </div>
+    </div>
+
+    <!--  阻止默认行为 下面的例子阻止了href跳转刷新页面的功能 -->
+    <a href="http://www.sina.com.cn/" @click.prevent="showA">Click A</a>
+    <!--  只执行一次  -->
+    <button @click.once="showB">once</button>
+
+    <!--  过滤器  -->
+    <div>
+        <p><span>全局过滤器：</span><span>{{1 | addZero}}</span></p>
+        <p><span>局部过滤器:</span><span>{{23.4587 | number(0)}}</span></p>
+        <p><span>日期时间:</span><span>{{curTime | dateFormat}}</span></p>
+    </div>
+
+
+    <!--  键盘事件  -->
+    <div>
+        <!-- 13对应键盘按键的keyCode -->
+        <input type="text" @keydown.13="enter()" placeholder="enter">
+        <input type="text" @keydown.enter="enter($event)" placeholder="enter">
+        <input type="text" @keydown.a="key($event)" placeholder="a">
+        <input type="text" @keydown.esc="key($event)" placeholder="esc">
+        <!--组合键-->
+        <input type="text" @keydown.ctrl.a="key($event)" placeholder="ctrl+a">
+        <input type="text" @keydown.ctrl.65="key($event)" placeholder="ctrl+a">
+
+
+    </div>
+
+
+</div>
+
+</body>
+</html>

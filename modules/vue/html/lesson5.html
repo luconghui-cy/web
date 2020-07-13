@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue_0004</title>
+    <script src="../js/vue.js"></script>
+    <script>
+        //组件(Vue的核心) ----> 简洁 复用
+
+        window.onload=function () {
+            //定义全局组件-----------------------------------方式一
+            var myComp = Vue.extend({
+                //必须要只有一个根节点
+                template:"<h1>Hello component!</h1>"
+            });
+            //注意命名规范 小写字母 连接符号 -
+            //此外必须 template 内容必须有一个根元素
+            Vue.component("hello",myComp);
+
+            //定义全局组件-----------------------------------方式二
+            Vue.component("my-word",{
+                template:'<h2>my word</h2>'
+            });
+            new Vue({
+                el:"#root",
+                data:{
+
+                },
+                filters:{
+
+                },
+                methods:{
+                    getBingJing:function () {
+                        return {
+                            title:'北京大学',
+                            list:[
+                                {id:1001,name:"李明",age:20,depart:"计算机科学与技术",org:"党员"},
+                                {id:1002,name:"张丽",age:20,depart:"物理学",org:"党员"},
+                                {id:1003,name:"王平",age:20,depart:"数学系",org:"非党员"},
+                                {id:1004,name:"李丽",age:20,depart:"中文系",org:"非党员"},
+                                {id:1005,name:"苏克",age:20,depart:"软件工程",org:"党员"},
+                                {id:1006,name:"James",age:20,depart:"自动化",org:"非党员"},
+                                {id:1007,name:"Kobe",age:20,depart:"飞行器制造",org:"党员"}
+                            ]
+                        };
+                    }
+                },
+                //定义局部组件
+                components:{
+                    'my-address':{
+                        template:'<h3>MY ADDRESS</h3>'
+                    },
+
+                    'custom-element':{
+                        template:"#myInfo",
+                        data:function () {
+                            return{
+                                title:"This is a Title",
+                                list:[1,2,3,4,5,6,7],
+                                order:{id:"1001",orderName:"nova 4",price:3000,
+                                    info:[
+                                        {infoid:"info1",text:"This is a student."},
+                                        {infoid:"info2",text:"How old are you?"},
+                                        {infoid:"info3",text:"中国通信"}
+                                    ]}
+                            }
+                        }
+                    },
+
+                    'appoint-ele':{
+                        template:"#appiont",
+                        data:function () {
+                            return {
+                                title:'北京大学',
+                                list:[
+                                    {id:1001,name:"李明",age:20,depart:"计算机科学与技术",org:"党员"},
+                                    {id:1002,name:"张丽",age:20,depart:"物理学",org:"党员"},
+                                    {id:1003,name:"王平",age:20,depart:"数学系",org:"非党员"},
+                                    {id:1004,name:"李丽",age:20,depart:"中文系",org:"非党员"},
+                                    {id:1005,name:"苏克",age:20,depart:"软件工程",org:"党员"},
+                                    {id:1006,name:"James",age:20,depart:"自动化",org:"非党员"},
+                                    {id:1007,name:"Kobe",age:20,depart:"飞行器制造",org:"党员"}
+                                ]
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+
+    <!--定义模板-->
+    <template id="myInfo">
+        <div style="background-color: blanchedalmond;">
+            <h2>{{title}}</h2>
+            <div>
+                <ul>
+                    <li v-for="(v,i) in list">{{v}}</li>
+                </ul>
+            </div>
+            <p>
+                <span>{{order.id}}</span>
+                <span>{{order.orderName}}</span>
+                <span>{{order.price}}</span>
+                <span v-for="(v,i) in order.info">{{v.text}}</span>
+            </p>
+        </div>
+    </template>
+
+
+    <!--template 2-->
+    <template id="appiont">
+        <div>
+            <p class="ptitle">{{title}}</p>
+            <div>
+                <p v-for="(v,i) in list">
+                    <span>{{v.id}}</span>
+                    <span>{{v.name}}</span>
+                    <span>{{v.age}}</span>
+                    <span>{{v.depart}}</span>
+                    <span>{{v.org}}</span>
+                </p>
+            </div>
+        </div>
+    </template>
+
+    <!--  样式  -->
+    <style>
+
+    </style>
+</head>
+<body>
+<div id="root">
+    <hello></hello>
+    <my-word></my-word>
+    <my-address></my-address>
+    <custom-element></custom-element>
+    <appoint-ele></appoint-ele>
+
+</div>
+</body>
+</html>

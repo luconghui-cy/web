@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../js/vue.js"></script>
+  <style>
+    .ball{
+      width: 10px;
+      height: 10px;
+      background-color: red;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <button @click="flag=!flag">toggle</button>
+    <transition @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
+      <div class="ball" v-show="flag"></div>
+    </transition>
+  </div>
+</body>
+<script>
+  new Vue({
+    el : '#app',
+    data : {
+      flag : false
+    },
+    methods : {
+      beforeEnter(el){
+        console.log(el)
+        el.style.transform = 'translate(0px,0px)'
+      },
+      enter(el,done){
+        console.log('enter')
+        el.offsetHeight
+        el.style.transform = 'translate(300px,400px)'
+        el.style.transition = 'all 0.8s ease'
+        done()
+      },
+      afterEnter(el){
+        console.log('afterenter')
+        this.flag = !this.flag
+      }
+    }
+
+  });
+</script>
+</html>

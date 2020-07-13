@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebAPI2</title>
+    <link type="text/css" rel="stylesheet" href="../../css/text.css" />
+    <script src="common.js"></script>
+</head>
+<body>
+    <div>
+        <h1>offset client scroll 三大家</h1>
+        <h2>在一般设置定位时 position，我们都设置 [子绝父相] ，即子元素 absolute 父元素 relative</h2>
+        <h1>offset相关属性</h1>
+        <pre>
+            offsetLeft ---> 是相对于 offsetParent对象的距离
+            offsetTop ----> 是相对于 offsetParent的距离
+            offsetWidth ----> 包含边框和内边距
+            offsetHeight ----> 包含边框和内边距
+            offsetParent  ----> 获取距离当前元素最近的定位父元素，如果没有定位父元素（脱离文档流）就是body!!!
+        </pre>
+
+        <h2>client 相关属性</h2>
+        <pre>
+            clientLeft --- > border-left 宽度
+            clientTop ----> border-top 宽度
+            clientWidth ----> 包括内边距但是不包括边框 不包括滚动条
+            clientHeight ---->包括内边距不包括边框 不包括滚动条
+        </pre>
+
+        <h2>scroll 相关属性</h2>
+        <h1>overflow:auto 当内容超出的时候自动加滚动条 overflow:hidden 隐藏滚动条</h1>
+        <pre>
+            scrollLeft ----滚动出去的距离 , 不包括边框
+            scrollTop ---- 滚动出去的距离 ， 不包括边框
+
+            scrollWidth ----- 内容的大小 包括padding 和 未显示的部分 ，不包括滚动条
+            scrollHeight ----- 内容的大小 包括padding 和 未显示的部分 ， 不包括滚动条
+
+            事件 滚动事件
+            box.onscroll = function(){
+                console.log(box.scrollLeft);
+                console.log(box.scrollTop);
+            }
+        </pre>
+
+        <h2>案例：盒子拖动</h2>
+        <div id="divcontainer" style="border: 10px solid #f00; overflow: hidden;
+            background-color: white; opacity: 0.8;
+            position: absolute;height: 200px; width: 300px;">
+            <div id="divdrop" style="background-color: red;cursor:move;padding: 10px;">
+                <span id="spancolse" style="cursor: pointer;">拖动案例</span>
+            </div>
+        </div>
+        <script>
+            var divcontainer = document.getElementById('divcontainer');
+            var divdrop = document.getElementById('divdrop');
+            var spancolse = document.getElementById('spancolse');
+
+            divdrop.onmousedown = function (e) {
+                //兼容性处理
+                e = e || window.event;
+
+                //计算鼠标在盒子中相对位置
+                var x = getPage(e).pageX - divcontainer.offsetLeft;
+                var y = getPage(e).pageY - divcontainer.offsetTop;
+                //注册鼠标移动事件
+                document.onmousemove = function (e) {
+                    //兼容性处理
+                    e = e || window.event;
+
+                    //修改盒子位置
+                    var boxX = getPage(e).pageX - x;
+                    var boxY = getPage(e).pageY - y;
+                    divcontainer.style.left = boxX + 'px';
+                    divcontainer.style.top = boxY + 'px';
+                }
+            }
+
+            //鼠标弹起
+            document.onmouseup = function () {
+                document.onmousemove = null;
+            }
+
+        </script>
+
+
+        <h2 style="margin-top: 300px;">登录窗口 以及 遮盖层应用 （类似模态窗口）</h2>
+        <h1>遮盖层的作用是突出显示 和 使页面其他部分不可用</h1>
+        <div >
+            <span id="spanLogin" style="font-size: 20px; font-weight: bold; cursor: pointer ">点击登录</span>
+        </div>
+        <!--  登录DIV  -->
+        <div id="login" style="border: 10px solid #C33; overflow: hidden;
+            background-color: white; opacity: 0.8; display: none; z-index: 99;
+            position: fixed;left: 40%; top:40%; height: 200px; width: 300px;">
+            <input type="text" width="200px">
+        </div>
+
+        <!--  遮盖层  -->
+        <div id="bg" style="width:100%; height: 100%; position: fixed; top: 0px; left: 0px;
+                background-color: black; opacity: 0.5; z-index: 10;
+                display: none;"></div>
+
+        <script>
+            var spanLogin = document.getElementById('spanLogin');
+            spanLogin.onclick = function (e) {
+                var login = document.getElementById('login');
+                var bg = document.getElementById('bg');
+                login.style.display = 'block';
+                bg.style.display = 'block';
+                return false;
+            }
+        </script>
+
+
+        <h1>mouseover mouseout 与 mouseenter 和 mouseleave</h1>
+        <pre>
+            mouseover 和 mouseout 能触发事件冒泡
+            mouseenter 和 mouseleave 不能触发事件冒泡
+        </pre>
+    </div>
+</body>
+</html>

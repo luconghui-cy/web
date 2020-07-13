@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../js/vue.js"></script>
+  <style>
+    table{
+      width: 100%;
+      background-color: whitesmoke;
+      border-collapse: collapse;
+    }
+
+    .myli{
+      margin: 5px;
+      background-color: greenyellow;
+      width: 100%;
+    }
+
+    .myli:hover{
+      background-color: hotpink;
+    }
+
+    table td,table th{
+      border: 2px solid #f00;
+    }
+
+    .v-enter,.v-leave-to{
+      opacity : 0;
+      transform: translateY(100px);
+    }
+
+    .v-enter-active,.v-leave-active{
+      transition: all 0.8s ease;
+    }
+
+    .v-move{
+      transition: all 0.8s ease;
+    }
+    .v-leave-active{
+      position: absolute;
+    }
+  </style>
+  
+</head>
+<body>
+  <div id="app">
+    <h2>{{ title }}</h2>
+
+    <transition-group appear= "out-in" tag="ul">
+      <li class="myli" v-for="item in list" :key="item.id">
+        {{ item.  text }}
+      </li>
+    </transition-group>
+    
+
+    <div>
+      <input type="text" v-model="carID" placeholder="carID">
+      <!--按回车添加-->
+      <input type="text" v-model="carText" @keyup.enter="addcar" placeholder="carText">
+      <button @click="addcar">add car</button>
+      <input type="text" v-model="keywords" placeholder="keywords" v-focus>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Text</th>
+          <th>CTime</th>
+          <th>Operator</th>
+        </tr>
+      </thead>
+      <tbody>
+        <transition-group appear= "out-in" tag="ul">
+          <tr v-for ="item in search(keywords)" :key="item.id">
+            <td>{{ item.id }}</td>
+            <td>{{ item.text }}</td>
+            <td>{{ item.ctime | formatTime() }}</td>
+            <td><a href="" v-on:click.prevent="delcar(item.id)">删除</a></td>
+          </tr>
+        </transition-group>        
+      </tbody>
+    </table>
+  </div>
+</body>
+<script>
+  var vm = new Vue({
+      el : '#app',
+      data : {
+        carID : '',
+        carText : '',
+        keywords : '',
+        title: '汽车商品列表',
+        list : [
+          {id : 101 , text : '奔驰' , ctime : new Date() },
+          {id : 102 , text : '宝马' , ctime : new Date() },
+          {id : 103 , text : '奥迪' , ctime : new Date() },
+          {id : 104 , text : '路虎' , ctime : new Date() },
+          {id : 105 , text : '丰田' , ctime : new Date() },
+          {id : 106 , text : '日产' , ctime : new Date() },
+          {id : 107 , text : '别克' , ctime : new Date() },
+          {id : 108 , text : '福特' , ctime : new Date() },
+        ]
+      },
+      methods : {
+        delcar : function(carid){
+          //console.log("delete car");
+          for(var i = 0 , len = this.list.length; i < len; i++){
+            if(this.list[i].id === carid){
+              this.list.splice(i,1);
+              return;
+            }
+          }
+          
+        },
+        addcar(){
+          var car = {id : this.carID, text : this.carText , ctime : new Date()};
+          this.list.push(car);
+          this.carID = this.carText = '';
+        },
+
+        search(v){
+          return this.list.filter((item)=>{
+            return item.text.includes(v);  
+          });
+        }
+
+      },
+      filters : {
+        formatTime(time,pattern=""){
+          var dt = new Date(time);
+          var y = dt.getFullYear();
+          var m = (dt.getMonth() + 1 + '').padStart(2,'0');
+          var d = dt.getDate().toString().padStart(2, '0');
+          var hh = dt.getHours().toString().padStart(2, '0');
+          var mm = dt.getMinutes().toString().padStart(2, '0');
+          var ss = dt.getSeconds().toString().padStart(2, '0');
+          //return y + '-' + m + '-' + d;
+          if(pattern.toLocaleLowerCase() === 'yyyy-mm-dd'){
+            return `${y}-${m}-${d} `;  
+          }else{
+            return `${y}-${m}-${d} ${hh}:${mm}:${ss} `;
+          }
+               
+        }
+      },
+      //自定义指令 
+      directives :{
+        focus : {
+          inserted(e){
+            console.log('focus');
+            e.focus(); 
+          },
+          bind(e){
+            console.log('bind');
+          }
+        }
+      }
+    });
+  
+</script>
+</html>

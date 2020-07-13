@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet" href="../../../css/text.css" />
+</head>
+<body>
+    <div>
+        <h1>选择器</h1>
+        <h2>属性选择器</h2>
+        <pre>
+            $( "[attribute|='value']" ) 要么等于给定的字符串，要么以该字符串开头，后跟连字符(-)。
+
+            属性hreflang等于en或者以en开头后跟连字符 - 的所有a元素
+            $( "a[hreflang|='en']" ).css( "border", "3px dotted green" );
+        </pre>
+        <pre>
+            $( "[attribute*='value']" ) 包含子串
+
+            属性name的值包含man字符串的所有input元素
+            $( "input[name*='man']" ).val( "has man in it!" );
+
+        </pre>
+        <pre>
+
+        </pre>
+    </div>
+</body>
+</html>

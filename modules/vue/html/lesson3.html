@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue_0003</title>
+    <script src="../js/vue.js"></script>
+    <script>
+        window.onload = function () {
+            new Vue({
+                el:"#root",
+                data:{
+                    msg:"Hello",
+                    age:20,
+                    html:"<h1>Hello Vue!</h1>",
+                    check:false,
+                    radiov:'0',
+                    arr:["0","1"],
+                    items:[
+                        {text:"中国",value:960},
+                        {text:"俄罗斯",value:2300},
+                        {text:"美国",value:930}
+                    ],
+                    selected:930
+                }
+            });
+        }
+    </script>
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<!--  防止数据延迟导致屏幕闪烁的方法  -->
+<div id="root">
+    <div v-cloak>{{msg}} -- {{age}}</div>
+    <div v-text="msg+' -- '+age"></div>
+    <div v-html="html"></div>
+    <!-- v-model -->
+    <div>
+        <input type="text" v-model="age">
+        <!--  禁用  -->
+        <input type="text" v-model="age":disabled="age==25">
+        <p><span>age:</span><span>{{age}}</span></p>
+        <!--复选框 单选框-->
+        <input type="checkbox" v-model="check">123{{check}}
+        <!--  多个复选框  -->
+        <div>
+            <input type="checkbox" v-model="arr" value="0">老师
+            <input type="checkbox" v-model="arr" value="1">学生
+            <input type="checkbox" v-model="arr" value="2">家长
+            <p>{{arr}}</p>
+        </div>
+        <!--单选按钮-->
+        <div>
+            <input type="radio" v-model="radiov" name="test" value="0">男
+            <input type="radio" v-model="radiov" name="test" value="1">女
+            {{radiov}}
+        </div>
+
+        <!--  select  -->
+        <div>
+            <select v-model="selected">
+                <option v-for="(v,i) in items" v-bind:value="v.value">{{v.text}}</option>
+            </select>
+            {{selected}}
+        </div>
+    </div>
+
+</div>
+
+
+
+</body>
+</html>

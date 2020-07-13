@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue_0002</title>
+    <script src="../js/vue.js"></script>
+    <style>
+        .p_style1{color:#f0f;font-size: 15px;}
+        .p_style2{color:#0ff;font-weight: bold;font-family: 华文彩云;}
+        .red{color:red;}
+        .green{color:green;}
+        .orange{color:orangered;}
+        .gray{color:gray;}
+    </style>
+</head>
+<body>
+<div id="order">
+    <h2>{{title}}</h2>
+    <ul>
+        <li v-for="(v,i) in category">
+            <p>{{i}}-{{v}}</p>
+        </li>
+    </ul>
+    <ul>
+        <li v-for="(v,i) in reciever">
+            <p>{{i}}:{{v}}</p>
+        </li>
+    </ul>
+    <div>
+        <p>
+            <button>New</button>
+            <button>Edit</button>
+            <button @click="toggle">{{showtext}}</button>
+            <input type="text" v-model="goods_name" placeholder="please input goods_name..">
+            <button @click="add(goods_name)">Add</button>
+        </p>
+    </div>
+    <table class="table" v-show="show">
+        <thead>
+        <th>index</th>
+        <th>order_id</th>
+        <th>goods_name</th>
+        <th>money</th>
+        <th>state</th>
+        <th>operate</th>
+        </thead>
+        <tbody>
+        <tr v-for="(order,index) in list">
+            <td>{{index}}</td>
+            <td>{{order.order_id}}</td>
+            <td>{{order.goods_name}}</td>
+            <!--  绑定样式  class 和 style  -->
+            <td :style="order.money>3000?style1:style2">{{order.money}}</td>
+            <td :class="order.state==1?'red':(order.state==2?'green':(order.state==3?'orange':'gray'))">{{order.state | stateCovert}}</td>
+            <td><button @click="deleteOrder(index)">Delete</button></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!--    事件绑定    -->
+    <div>
+        <button @dblclick="dblclick">dblclick</button>
+        <button @mouseover="mouseover">mouseover</button>
+        <button @mouseout="mouseout">mouseout</button>
+    </div>
+
+
+    <!--  显示隐藏 v-show 可以使用表达式 -->
+    <p v-show="total>5000" style="background-color: #CCC;padding: 10px;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque maxime praesentium quaerat rerum voluptatum? Amet aperiam commodi distinctio ea expedita impedit iusto minus, molestias nesciunt quia rem sapiente sint voluptatum.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aliquid aut deleniti doloribus ducimus ea earum enim incidunt inventore magnam mollitia nam natus qui, quod rerum sint sit ullam vero.</p>
+    <button @click="increasetotal">total ++</button>
+    <button @click="reducetotal">total --</button>
+    <input v-model="total">
+
+    <!--  v-if else  以及 三目表达式 -->
+    <h1 v-if="total==5000">total 等于 5000</h1>
+    <h1 v-else-if="total>5000">total 大于 5000 </h1>
+    <h1 v-else-if="total<5000 && total>=4990">total 小于 5000 且 小于等于 4990</h1>
+    <h2 v-else>total 小于 4990</h2>
+    <h1 v-if="(total>5000)?title='朝阳师范高等专科学校':title='清华大学'">{{title}}</h1>
+
+
+    <!--   绑定样式 v-bind: 简写使用 冒号 :     以前jquery addClass removeClass 来动态改变样式  -->
+    <div>
+        <img v-bind:src="imgs[0].url" alt="" :title="imgs[0].title" width="200px" height="100px">
+        <img v-bind:src="total>5000?imgs[1].url:imgs[2].url" alt="" :title="total>5000?imgs[1].title:imgs[2].title" width="200px" height="100px">
+    </div>
+
+    <!--样式绑定-->
+    <!-- 单个引用 -->
+    <p :class="ps1">单个引用</p>
+    <!-- 多个引用   后面的会覆盖前面的    -->
+    <p v-bind:class="[ps1,ps2]">科学出版社</p>
+    <!--  通过一个变量显示  -->
+    <p :class="{p_style1:(total==5000)}">龙门书局</p>
+    <p v-bind:class="total>5000?ps1:ps2">朝阳师范高等专科学校</p>
+
+
+    <!-- 绑定  style -->
+    <p :style="{'color':'red','font-size':'30px'}">Hello world!</p>
+    <p :style="style2">Hello Vue!</p>
+    <p :style="[style1,style2]">I am a student.</p>
+    <p v-bind:style="total>5000?style1:style2">朝阳师范高等专科学校</p>
+
+
+
+</div>
+</body>
+<script>
+    //页面加载完成后执行
+    window.onload=function () {
+        //1.查询数据
+        findData();
+    }
+
+    //查询后台数据
+    function findData() {
+        //1查询
+        var orderInfo = {
+            title:"Hello Vue!",
+            list:[
+                {order_id:"10001",goods_name:"Huawei P30",money:4299,state:0},
+                {order_id:"10002",goods_name:"Huawei Nova 3e",money:1999,state:1},
+                {order_id:"10003",goods_name:"Huawei Nova 4",money:3000,state:2},
+                {order_id:"10004",goods_name:"Huawei Mate 20",money:5299,state:3}],
+            date:new Date(),
+            operator:"李明",
+            remark:"华为官方旗舰店",
+            reciever:{account:"luconghui",name:"陆聪慧",address:"辽宁省朝阳市金海花园"},
+            category:["football","basketball","vollbay"],
+            show:true,
+            total:5000,
+            showtext:"隐藏数据",
+            imgs:[
+                {url:"../img/a2.jpg",title:"科学"},
+                {url:"../img/a5.jpg",title:"人民"},
+                {url:"../img/aaa (28).jpg",title:"发展"},
+                {url:"../img/aaa (29).jpg",title:"学习"}],
+            //class
+            ps1:"p_style1",
+            ps2:"p_style2",
+            //style json 格式
+            style1:{'color':'red','font-size':'30px','background-color':'#eee'},
+            style2:{'color':'green','font-size':'18px'}
+        };
+        //2构造vue
+        var vm = new Vue({
+            el:"#order",
+            data:orderInfo,
+            methods:{
+                deleteOrder:function (index) {
+                    this.list.splice(index,1);
+                },
+                toggle:function () {
+                    this.show = this.show?false:true;
+                    this.showtext = this.show?"隐藏数据":"显示数据";
+                },
+                dblclick:function () {
+                    this.title = "dblClick Event";
+                },
+                mouseover:function () {
+                    this.title = "mouseover Event";
+                },
+                mouseout:function () {
+                    this.title = "mouseout Event";
+                },
+                add:function (goods_name) {
+                    if(goods_name){
+                        this.list.unshift({order_id:"99999",goods_name:goods_name,money:8888,state:0});
+                    }
+                },
+                increasetotal:function () {
+                    this.total++;
+                    if(this.total>5000){
+                        this.ps3 = "p_style1";
+                    }else{
+                        this.ps3 = "p_style2";
+                    }
+
+                },
+                reducetotal:function () {
+                    this.total--;
+                    if(this.total>5000){
+                        this.ps3 = "p_style1";
+                    }else{
+                        this.ps3 = "p_style2";
+                    }
+                }
+
+            },
+            filters:{
+                stateCovert:function (state) {
+                    switch (state){
+                        case 0:
+                            return "已购买";
+                        case 1:
+                            return "已发货";
+                        case 2:
+                            return "已收货";
+                        case 3:
+                            return "已评价";
+                        default:
+                            return "未知";
+                    }
+                }
+            }
+
+        });
+    }
+
+</script>
+</html>

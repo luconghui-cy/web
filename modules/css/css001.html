@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CSS001.HTML</title>
+    <style>
+        body{
+            padding: 20px 200px;
+            /*
+            background-image: url('../../images/a5.jpg');
+            background-attachment: fixed;
+            */
+        }
+        pre{
+            font-size: 20px;
+            color: #1c39ff;
+            font-weight: bold;
+            background: #EEE;
+            padding: 10px;
+            border: 1px solid #CCC;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h2>CSS 字体综合写法</h2>
+        <pre>
+            各个属性要用空格隔开，必须按照下面的先后顺序。
+            其中 font-style 和  font-weight可以省略，但是 font-size和 font-family不可省略！！
+            选择器{font : font-style font-weight font-size/line-height font-family; }
+        </pre>
+    </div>
+    <div>
+        <h2>当同一个 HTML 元素被不止一个样式定义时，会使用哪个样式呢？其中数字 4 拥有最高的优先权。</h2>
+        <ol>
+            <li>浏览器缺省设置</li>
+            <li>外部样式表</li>
+            <li>内部样式表（位于 <head> 标签内部）</li>
+            <li>内联样式（在 HTML 元素内部）</li>
+        </ol>
+        <p>因此，内联样式（在 HTML 元素内部）拥有最高的优先权，这意味着它将优先于以下的样式声明：<head> 标签中的样式声明，外部样式表中的样式声明，或者浏览器中的样式声明（缺省值）</p>
+    </div>
+
+    <div>
+        <h2>值的不同写法和单位</h2>
+        <pre>
+             p:{color:"red";}
+             p:{color:"#f00"}
+             p { color: rgb(255,0,0); }
+             p { color: rgb(100%,0%,0%); }
+        </pre>
+        <p>当使用 RGB 百分比时，即使当值为 0 时也要写百分比符号。但是在其他的情况下就不需要这么做了。比如说，当尺寸为 0 像素时，0 之后不需要使用 px 单位，因为 0 就是 0，无论单位是什么。</p>
+    </div>
+
+    <div>
+        <h2>选择器的分组</h2>
+        <p>你可以对选择器进行分组，这样，被分组的选择器就可以分享相同的声明。用逗号将需要分组的选择器分开。在下面的例子中，我们对所有的标题元素进行了分组。所有的标题元素都是绿色的。</p>
+        <pre>
+            h2,h3,h4{
+                color:"green";
+            }
+        </pre>
+    </div>
+
+    <div>
+        <h2>id 选择器和派生选择器</h2>
+        <p style="font-size: 40px;">CSS 注释的快捷键 ctrl + shift + / </p>
+        <p>在现代布局中，id 选择器常常用于建立派生选择器。</p>
+        <p style="font-size: 20px;color: red;">CSS font-size:尽量使用偶数字号!!!!</p>
+        <p style="font-size: 20px;color: red">
+            中文字体需要加双引号，英文字体一般不需要加引号(如果字体名称包括空格，则英文字体必须加双引号 如 Microsoft Yahei 或 Times New Roman)
+        </p>
+        <p style="font-size: 20px;color: red;font-weight: bold;">
+            在 CSS 中设置字体名称，直接写中文是可以的。但是在文件编码（GB2312、UTF-8 等）不匹配时会产生乱码的错误。 为此，在 CSS直接使用 Unicode 编码来写字体名称可以避免这些错误。使用 Unicode 写中文字体名称，浏览器是可以正确的解析的。 例如：font-family:"\5FAE\8F6F\96C5\9ED1"，表示设置字体为“微软雅黑”。
+        </p>
+        <pre>
+            新细明体	PMingLiU	\65B0\7EC6\660E\4F53	&#x65B0;&#x7EC6;&#x660E;&#x4F53;
+            细明体	MingLiU	\7EC6\660E\4F53	&#x7EC6;&#x660E;&#x4F53;
+            标楷体	DFKai-SB	\6807\6977\4F53	&#x6807;&#x6977;&#x4F53;
+            黑体	SimHei	\9ED1\4F53	&#x9ED1;&#x4F53;
+            宋体	SimSun	\5B8B\4F53	&#x5B8B;&#x4F53;
+            新宋体	NSimSun	\65B0\5B8B\4F53	&#x65B0;&#x5B8B;&#x4F53;
+            仿宋	FangSong	\4EFF\5B8B	&#x4EFF;&#x5B8B;
+            楷体	KaiTi	\6977\4F53	&#x6977;&#x4F53;
+            仿宋_GB2312	FangSong_GB2312	\4EFF\5B8B_GB2312	&#x4EFF;&#x5B8B;_GB2312
+            楷体_GB2312	KaiTi_GB2312	\6977\4F53_GB2312	&#x6977;&#x4F53;_GB2312
+            微软正黑体	Microsoft JhengHei	\5FAE\x8F6F\6B63\9ED1\4F53	&#x5FAE;&#x8F6F;&#x6B63;&#x9ED1;&#x4F53;
+            微软雅黑	Microsoft YaHei	\5FAE\8F6F\96C5\9ED1	&#x5FAE;&#x8F6F;&#x96C5;&#x9ED1;
+        </pre>
+        <pre>
+            #sidebar p {
+                font-style: italic;
+                text-align: right;
+                margin-top: 0.5em;
+            }
+
+            #sidebar h2 {
+                font-size: 1em;
+                font-weight: normal;
+                font-style: italic;
+                margin: 0;
+                line-height: 1.5;
+                text-align: right;
+            }
+        </pre>
+    </div>
+
+    <div>
+        <h2>和 id 一样，class 也可被用作派生选择器：</h2>
+        <pre>
+            .fancy td {
+                color: #f60;
+                background: #666;
+            }
+        </pre>
+        <h2>元素也可以基于它们的类而被选择：</h2>
+        <pre>
+            td.fancy {
+                color: #f60;
+                background: #666;
+            }
+        </pre>
+    </div>
+
+    <div>
+        <h2>对带有指定属性的 HTML 元素设置样式</h2>
+        <p>可以为拥有指定属性的 HTML 元素设置样式，而不仅限于 class 和 id 属性。</p>
+        <p>下面的例子为带有 title 属性的所有元素设置样式：</p>
+        <pre>
+            [title]
+            {
+            color:red;
+            }
+        </pre>
+        <h2>属性和值选择器</h2>
+        <p>下面的例子为 title="W3School" 的所有元素设置样式：</p>
+        <pre>
+            [title=W3School]
+            {
+            border:5px solid blue;
+            }
+        </pre>
+        <h2>CSS 选择器参考手册</h2>
+        <pre>
+            [attribute]	        用于选取带有指定属性的元素。
+            [attribute=value]	用于选取带有指定属性和值的元素。
+            [attribute~=value]	用于选取属性值中包含指定词汇的元素。
+            [attribute|=value]	用于选取带有以指定值开头的属性值的元素，该值必须是整个单词。
+            [attribute^=value]	匹配属性值以指定值开头的每个元素。
+            [attribute$=value]	匹配属性值以指定值结尾的每个元素。
+            [attribute*=value]	匹配属性值中包含指定值的每个元素。
+        </pre>
+        <h2>属性选择器在为不带有 class 或 id 的表单设置样式时特别有用：</h2>
+        <pre>
+            input[type="text"]
+            {
+              width:150px;
+              display:block;
+              margin-bottom:10px;
+              background-color:yellow;
+              font-family: Verdana, Arial;
+            }
+
+            input[type="button"]
+            {
+              width:120px;
+              margin-left:35px;
+              display:block;
+              font-family: Verdana, Arial;
+            }
+        </pre>
+        <p>注意：如果属性被外部样式表和内部样式同时修饰时，内部样式优先级高</p>
+    </div>
+    <div>
+        <h2>背景色 background-color</h2>
+        <p>background-color 不能继承，其默认值是 transparent。transparent 有“透明”之意。也就是说，如果一个元素没有指定背景色，那么背景就是透明的，这样其祖先元素的背景才能可见。</p>
+        <h2>背景图像 background-image</h2>
+        <p>background-image 属性的默认值是 none，表示背景上没有放置任何图像。如果需要设置一个背景图像，必须为这个属性设置一个 URL 值：</p>
+        <p>background-image 也不能继承。事实上，所有背景属性都不能继承</p>
+        <pre>
+            body {background-image: url(/i/eg_bg_04.gif);}
+        </pre>
+        <h2>背景重复  background-repeat 属性 repeat;no-repeat;repeat-x;repeat-y;</h2>
+        <p>属性值 repeat 导致图像在水平垂直方向上都平铺，就像以往背景图像的通常做法一样。repeat-x 和 repeat-y 分别导致图像只在水平或垂直方向上重复，no-repeat 则不允许图像在任何方向上平铺。</p>
+        <h2>背景定位,background-position,例如居中放置 </h2>
+        <pre>
+            body
+              {
+                background-image:url('/i/eg_bg_03.gif');
+                background-repeat:no-repeat;
+                background-position:center;
+              }
+        </pre>
+        <p>background-position 属性提供值有很多方法。首先，可以使用一些关键字：top、bottom、left、right 和 center。通常，这些关键字会成对出现，不过也不总是这样。还可以使用长度值，如 100px 或 5cm，最后也可以使用百分数值。不同类型的值对于背景图像的放置稍有差异</p>
+        <p>图像放置关键字最容易理解，其作用如其名称所表明的。例如，top right 使图像放置在元素内边距区的右上角。
+            根据规范，位置关键字可以按任何顺序出现，只要保证不超过两个关键字 - 一个对应水平方向，另一个对应垂直方向。
+            如果只出现一个关键字，则认为另一个关键字是 center。默认地，背景图像将从一个元素的左上角开始</p>
+        <div style="border: 5px solid #c33;width: 600px;height:500px;background-color: #DEF;
+            background-image: url('../../images/a2.jpg');
+            background-repeat: no-repeat;
+            background-position: top center;
+            background-size: 50% 50%;">
+        </div>
+        <h2>背景的几个重要属性</h2>
+        <pre>
+            background-color
+            background-image
+            background-repeat
+            background-position
+            background-attachment
+            background-size 规定背景的尺寸。
+            background-clip 规定背景的绘制区域。
+            background-origin 规定背景图片的定位区域。background-origin 属性规定 background-position 属性相对于什么位置来定位
+        </pre>
+    </div>
+
+    <div>
+        <h2>CCS 轮廓 outline(style color width 类似border)</h2>
+    </div>
+    <div>
+        <h2>CSS 表格</h2>
+        <p>如果需要把表格显示为单线条边框，请使用 border-collapse 属性,属性设置是否将表格边框折叠为单一边框：</p>
+        <p style="color: red;">border-collapse : collapse，边框会合并为一个单一的边框。会忽略 border-spacing 和 empty-cells 属性。</p>
+        <p2>表格的文本对齐方式 text-align 和 vertical-align 属性设置表格中文本的对齐方式</p2>
+        <pre>
+            td
+            {
+                height:50px;
+                vertical-align:bottom;
+                text-align:center;
+            }
+        </pre>
+        <pre>
+            border-collapse	设置是否把表格边框合并为单一的边框。
+            border-spacing	设置分隔单元格边框的距离。
+            caption-side	设置表格标题的位置(top bottom)。
+            empty-cells	设置是否显示表格中的空单元格。
+            table-layout设置显示单元、行和列的算法。
+            automatic自动布局，列宽度由单元格内容设定。 和 fixed固定布局表格，列宽由表格宽度和列宽度设定
+        </pre>
+    </div>
+
+    <div>
+        <h2>CSS 文本属性</h2>
+        <pre>
+            color	设置文本颜色
+            direction	设置文本方向。
+            line-height	设置行高。
+            letter-spacing	设置字符间距。
+            text-align	对齐元素中的文本。
+            text-decoration	向文本添加修饰。
+            text-indent	缩进元素中文本的首行。
+            text-shadow	设置文本阴影。CSS2 包含该属性，但是 CSS2.1 没有保留该属性。
+            text-transform	控制元素中的字母。
+            unicode-bidi	设置文本方向。
+            white-space	设置元素中空白的处理方式。
+            word-spacing	设置字间距。
+        </pre>
+    </div>
+
+    <div>
+        <h2>CSS 字体属性</h2>
+        <pre>
+            font	简写属性。作用是把所有针对字体的属性设置在一个声明中。
+            font-family	设置字体系列。
+            font-size	设置字体的尺寸。
+            font-size-adjust	当首选字体不可用时，对替换字体进行智能缩放。（CSS2.1 已删除该属性。）
+            font-stretch	对字体进行水平拉伸。（CSS2.1 已删除该属性。）
+            font-style	设置字体风格。
+            font-variant	以小型大写字体或者正常字体显示文本。
+            font-weight	设置字体的粗细。
+        </pre>
+    </div>
+
+    <div>
+        <h2>CSS 列表属性(list)</h2>
+        <pre>
+            list-style	简写属性。用于把所有用于列表的属性设置于一个声明中。
+            list-style-image	将图象设置为列表项标志。
+            list-style-position	设置列表中列表项标志的位置。(outside inside)
+            list-style-type	设置列表项标志的类型。
+            marker-offset
+        </pre>
+        <pre>
+            ul
+            {
+              list-style:square inside url('/i/arrow.gif');
+            }
+        </pre>
+    </div>
+
+    <div>
+        <h2>CSS 链接</h2>
+        <p>注释：为了使定义生效，a:hover 必须位于 a:link 和 a:visited 之后！！
+            注释：为了使定义生效，a:active 必须位于 a:hover 之后！！</p>
+        <p style="font-size: 20px;">love hate 爱上了讨厌</p>
+        <pre>
+            a:link {text-decoration:none;}    /* 未被访问的链接 */
+            a:visited {text-decoration:none;} /* 已被访问的链接 */
+            a:hover {text-decoration:underline;}   /* 鼠标指针移动到链接上 */
+            a:active {text-decoration:underline;}  /* 正在被点击的链接 */
+        </pre>
+    </div>
+
+    <div>
+        <h2>CSS 框模型</h2>
+        <p>可以为元素的内边距设置百分数值。百分数值是相对于其父元素的 width 计算的，这一点与外边距一样。所以，如果父元素的 width 改变，它们也会改变。
+            上下内边距的百分数会相对于父元素宽度设置，而不是相对于高度</p>
+        <p>边框与背景,边框绘制在“元素的背景之上”。这很重要，因为有些边框是“间断的”（例如，点线边框或虚线框），元素的背景应当出现在边框的可见部分之间。</p>
+        <h2>border-style</h2>
+        <pre>
+            这条规则为类名为 aside 的段落定义了四种边框样式：实线上边框、点线右边框、虚线下边框和一个双线左边框。
+            p.aside {border-style: solid dotted dashed double;}
+        </pre>
+        <p style="border-style: solid dotted dashed double;
+            border-width: 10px 6px 3px 1px;
+            border-color: #f00 #0f0 #00f #f0f;
+            font-size: 50px;background-color: lightskyblue">Hello</p>
+        <p style="font-size: 100px;
+            border-style: outset;
+            background-color: whitesmoke;
+            border-width: 20px;
+            border-color: red orangered green blue">Hello world!</p>
+        <p>如果边框样式为 none，即边框根本不存在，那么边框就不可能有宽度，因此边框宽度自动设置为 0，而不论您原先定义的是什么。</p>
+        <p>利用 transparent，使用边框就像是额外的内边距一样；此外还有一个好处，就是能在你需要的时候使其可见。</p>
+    </div>
+
+    <div>
+        <h2>CSS 选择器</h2>
+        <p>元素选择器，类选择器，ID选择器，属性选择器，后代选择器，子元素选择器，相邻兄弟选择器 伪类 伪元素</p>
+        <pre>
+            div,p     选择所有 div 元素和所有 p元素。
+            div p     选择 div 元素内部的所有 p 元素。
+            div>p     选择父元素为 div 元素的所有 p 元素。
+            div+p     选择紧接在 div 元素之后的所有 p 元素。
+
+            [target]  选择带有 target 属性所有元素。
+            [target=_blank]	选择 target="_blank" 的所有元素。
+            [title~=flower]	选择 title 属性包含单词 "flower" 的所有元素。
+            [lang|=en]	选择 lang 属性值以 "en" 开头的所有元素。
+
+            :link	a:link	选择所有未被访问的链接。
+            :visited	a:visited	选择所有已被访问的链接。
+            :hover	a:hover	选择鼠标指针位于其上的链接。
+            :active	a:active	选择活动链接。
+
+            :focus	input:focus	选择获得焦点的 input 元素。
+            :first-letter	p:first-letter	选择每个 p 元素的首字母。
+            :first-line	p:first-line	选择每个 p 元素的首行。
+            :first-child	p:first-child	选择属于父元素的第一个子元素的每个 p 元素。
+            :before	p:before	在每个 p 元素的内容之前插入内容。
+            :after	p:after	在每个 p 元素的内容之后插入内容。
+            :lang(language)	p:lang(it)	选择带有以 "it" 开头的 lang 属性值的每个 p 元素。
+
+            element1~element2	p~ul	选择前面有 p 元素的每个 ul 元素。	3
+            [attribute^=value]	a[src^="https"]	选择其 src 属性值以 "https" 开头的每个 a 元素。
+            [attribute$=value]	a[src$=".pdf"]	选择其 src 属性以 ".pdf" 结尾的所有 a 元素。
+            [attribute*=value]	a[src*="abc"]	选择其 src 属性中包含 "abc" 子串的每个 a元素。
+
+            :first-of-type	p:first-of-type	选择属于其父元素的首个 p 元素的每个 p 元素。
+            :last-of-type	p:last-of-type	选择属于其父元素的最后 p 元素的每个 p 元素。
+            :only-of-type	p:only-of-type	选择属于其父元素唯一的 p 元素的每个 p 元素。
+            :only-child	p:only-child	选择属于其父元素的唯一子元素的每个 p 元素。
+            :nth-child(n)	p:nth-child(2)	选择属于其父元素的第二个子元素的每个 p 元素。
+            :nth-last-child(n)	p:nth-last-child(2)	同上，从最后一个子元素开始计数。
+            :nth-of-type(n)	p:nth-of-type(2)	选择属于其父元素第二个 p 元素的每个 p 元素。
+            :nth-last-of-type(n)	p:nth-last-of-type(2)	同上，但是从最后一个子元素开始计数。
+            :last-child	p:last-child	选择属于其父元素最后一个子元素每个 p 元素。
+            :root	:root	选择文档的根元素。
+            :empty	p:empty	选择没有子元素的每个 p 元素（包括文本节点）。
+            :target	#news:target	选择当前活动的 #news 元素。
+            :enabled	input:enabled	选择每个启用的 input 元素。
+            :disabled	input:disabled	选择每个禁用的 input 元素
+            :checked	input:checked	选择每个被选中的 input 元素。
+            :not(selector)	:not(p)	选择非 p 元素的每个元素。
+            ::selection	::selection	选择被用户选取的元素部分。
+        </pre>
+        <pre>
+            *[title] {color:red;} 包含标题（title）的所有元素变为红色
+            a[href] {color:red;} 只对有 href 属性的锚（a 元素）应用样式
+            a[href][title] {color:red;} 同时有 href 和 title 属性的 HTML 超链接的文本设置为红色
+            img[alt] {border: 5px solid red;} 对所有带有 alt 属性的图像应用样式
+            a[href="http://www.w3school.com.cn/"][title="W3School"] {color: red;}
+            p[class~="important"] {color: red;} class 属性中包含 important 的元素
+            [abc^="def"] 选择 abc 属性值以 "def" 开头的所有元素
+            [abc$="def"] 选择 abc 属性值以 "def" 结尾的所有元素
+            [abc*="def"] 选择 abc 属性值中包含子串 "def" 的所有元素
+        </pre>
+        <pre>
+            [attribute*=value]	匹配属性值中包含指定值的每个元素。
+            [attribute~=value]	用于选取属性值中包含指定词汇的元素。
+            [attribute|=value]	用于选取带有以指定值开头的属性值的元素，该值必须是整个单词。
+            [attribute^=value]	匹配属性值以指定值开头的每个元素。
+            [attribute$=value]	匹配属性值以指定值结尾的每个元素。
+        </pre>
+    </div>
+
+    <div>
+        <h2>CSS 伪类 伪元素</h2>
+        <pre>
+            :active	向被激活的元素添加样式。	1
+            :focus	向拥有键盘输入焦点的元素添加样式。	2
+            :hover	当鼠标悬浮在元素上方时，向元素添加样式。	1
+            :link	向未被访问的链接添加样式。	1
+            :visited	向已被访问的链接添加样式。	1
+            :first-child	向元素的第一个子元素添加样式。	2
+            :last-child     最后一个元素
+            :nth-child(n)   选中第n个子元素
+            :nth-child(even) 选择 2 4 6 8 .....
+            :nth-child(odd)  选择 1 3 5 7 .....
+            :lang	向带有指定 lang 属性的元素添加样式。2
+        </pre>
+        <pre>
+            :first-letter	向文本的第一个字母添加特殊样式。	1
+            :first-line	向文本的首行添加特殊样式。	1
+            :before	在元素之前添加内容。	2
+            :after	在元素之后添加内容。
+        </pre>
+    </div>
+
+    <div>
+        <h2>外边距合并：当两个垂直外边距相遇时，它们将形成一个外边距。合并后的外边距的高度等于两个发生合并的外边距的高度中的较大者。</h2>
+    </div>
+    <div>
+        <h2>background:#f40!important 提高层叠性</h2>
+    </div>
+</body>
+</html>

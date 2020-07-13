@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue_0001</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+<div id="root">
+    <p>name:{{name}}</p>
+    <p>age:{{age}}</p>
+    <p>salary:{{salary}}</p>
+    <p>depart:{{depart}}</p>
+    <p>order_details:{{order}}</p>
+    <p>list:{{list}}</p>
+    <p>{{display()}}</p>
+    <!--绑定-->
+    <input class="form-control" v-model="name"></input>
+
+    <!-- 模型绑定 -->
+    <div class="input-group" style="padding: 10px;background-color: #CCC;width: 500px;">
+        <input class="form-control" type="text" v-model="bid" placeholder="bookID">
+        <input class="form-control" type="text" v-model="bname" placeholder="bookName">
+        <button class="btn btn-primary" v-on:click="add(bid,bname)">ADD</button>
+    </div>
+    <!-- 循环显示数组中的对象 -->
+    <h2>list中公有{{list.length}}个对象</h2>
+    <table class="table table-striped" style="width: 1000px;">
+        <thead>
+        <th>索引</th>
+        <th>ID</th>
+        <th>名称</th>
+        <th>状态</th>
+        <th>操作</th>
+        </thead>
+        <tbody>
+        <tr v-for="(item,idx) in list">
+            <td>{{idx}}</td>
+            <td>{{item.bookID}}</td>
+            <td>{{item.bookName}}</td>
+            <!--  下面使用了管道 | 过滤器 stateCoverter  -->
+            <td>{{item.state | stateCoverter}}</td>
+            <td><button v-on:click="del(idx)">Delete</button></td>
+        </tr>
+        </tbody>
+    </table>
+    <ul>
+        <!-- v-for作用对象,参数i表示key -->
+        <li v-for="(v,key) in order">{{key}}:{{v}}</li>
+    </ul>
+
+
+    <!-- 事件绑定 这里可以用@符号来代替 v-on: -->
+    <button v-on:click="onClick">click</button>
+    <button v-on:mouseover="onMouseOver">onMouseOver</button>
+    <button v-on:mouseout="onMouseOut">onMouseOut</button>
+    <button @dblclick="onDblClick">onDblClick</button>
+    <button @click="hiddenParagraph">Toggle-Paragraph</button>
+    <!--  隐藏显示内容  -->
+    <p style="width:500px;padding: 10px;background-color: #CCC;margin: 10px;"
+       v-show="flag">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad assumenda consequuntur dolore doloremque dolorum et fugit impedit laboriosam maiores molestias nisi odio odit pariatur perferendis, perspiciatis quibusdam rem sapiente soluta?</p>
+    <button @click="lang">浪起来</button>
+    <button @click="stop">低调</button>
+    <h3>{{ msg }}</h3>
+</div>
+</body>
+<script>
+    window.onload = function () {
+        var vm = new Vue({
+            el:"#root",
+            data:{
+                name:"李明",
+                age:20,
+                salary:100000,
+                depart:"研发部",
+                order:{id:100011,remark:"Huawei P30",muney:3500},
+                list:[{bookID:101,bookName:"三国演义",state:0},{bookID:102,bookName:"水浒传",state:1},{bookID:103,bookName:"西游记",state:2}],
+                bid:"",
+                bname:"",
+                flag:true,
+                msg:"猥琐发育~~别浪！稳住~我们能赢！",
+                intervalId:null
+            },
+            methods:{
+                display:function () {
+                    return this.name+this.age+this.salary+this.depart;
+                },
+                add:function (book_id,book_name) {
+                    console.log(this,this.bid,this.bname);
+                    //插入到顶部
+                    if(book_id && book_name){
+                        this.list.unshift({bookID:book_id,bookName:book_name,state:0});
+                        this.bid="";
+                        this.bname="";
+                    }
+                },
+                del:function (index) {
+                    this.list.splice(index,1);
+                },
+                onClick:function(){
+                    this.name = "Hello World!";
+                },
+                onMouseOver:function () {
+                    this.name = "I am a student.";
+                },
+                onMouseOut:function () {
+                    this.name="科学出版社";
+                },
+                onDblClick:function () {
+                    this.name ="龙门书局";
+                },
+                hiddenParagraph:function () {
+                    if(this.flag==true){
+                        this.flag= false;
+                    }else {
+                        this.flag = true;
+                    }
+
+                },
+                lang(){
+                    if(this.intervalId != null){
+                        return;       
+                    }
+                    this.intervalId = setInterval(() => {
+                        var start = this.msg.substring(0,1);
+                        var end = this.msg.substring(1);
+                        this.msg = end + start;
+                    }, 200);
+
+                },
+                stop(){
+                    clearInterval(this.intervalId);
+                    this.intervalId = null;    
+                }
+            },
+            //过滤器
+            filters:{
+                stateCoverter:function (type) {
+                    switch (type){
+                        case 0:
+                            return "未采购";
+                        case 1:
+                            return "已采购";
+                        case 2:
+                            return "采购中";
+                        default:
+                            return "未知";
+                    }
+                }
+            }
+        });
+    }
+
+</script>
+</html>
